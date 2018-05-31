@@ -1,0 +1,17 @@
+{{ include('@IIABStudentTransfer/Report/header.html.twig') }}
+
+<div class="push">
+    <p>Guardian of {{ submission.firstName }} {{ submission.lastName }}<br />
+        {{ submission.address }}<br />
+        {{ submission.city }}, {{ submission.zip }}</p>
+
+    <p>RE: Majority-to-Minority Transfer Status for Confirmation Number: {{ submission.confirmationNumber }}</p>
+
+    <p>The {{ submission.enrollmentPeriod }} Majority-to-Minority Round 2 Lottery has been completed. Your application for a Majority-to-Minority Student Transfer for {{ submission.firstName }} {{ submission.lastName }} for {{ submission.enrollmentPeriod }} was not awarded a space and has been wait listed for the following choice:</p>
+    <div>
+        <p>{{ waitListedSchool.formattedString }}</p>
+    </div>
+
+    <p>Should additional spaces become available at {{ waitListedSchool.formattedString }}, those spaces will be filled by students on the Wait List based on each student’s lottery number.  If spaces become available at {{ waitListedSchool.formattedString }} and your student is selected for a space based on his/her lottery number, our office will contact you and award your student a space at this school. Please note that the Wait List expires on July 15, {{ submission.enrollmentPeriod.afterLotteryEndingDate|date("Y") }}.</p>
+</div>
+{{ include('@IIABStudentTransfer/Report/footer.html.twig') }}

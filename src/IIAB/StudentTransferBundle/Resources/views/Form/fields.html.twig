@@ -1,0 +1,107 @@
+{% block form_errors %}
+{% spaceless %}
+    {% if errors|length > 0 %}
+    <ul>
+        {% for error in errors %}
+
+            {% if '<ul' in error.message %}
+                <li style="text-align: left; border: 1px solid red; margin: 1em; padding: 1em;">{{ error.message|raw }}</li>
+            {% else %}
+                 <li>{{ error.message }}</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endspaceless %}
+{% endblock form_errors %}
+
+{% block _form_gradesRepeated_row %}
+    <div style="display:inline-block; vertical-align:top">
+        <div style="max-width: 255px; display: inline-block; vertical-align:top">
+        {{ form_label(form) }}
+        <span style="max-width: 255px; display: inline-block;">Please note, this is not a requirement of the program.</span><br/>
+    </div>
+    <div style="display: inline-block">
+        {{ form_widget(form) }}
+    </div>
+{% endblock _form_gradesRepeated_row %}
+
+{% block _form_gradesRepeated_label %}
+    <label for="form_gradesRepeated" class="required">{{ form.vars.label|trans }}</label><br/>
+
+{% endblock _form_gradesRepeated_label %}
+
+{% block _form_gradesRepeated_entry_label %}
+    <label for="{{form.vars.id}}">{{form.vars.label}}</label><br/>
+{% endblock _form_gradesRepeated_entry_label %}
+
+{% block _form_confirmStatus_row %}
+    <div style="background-color: #f0fafc; border: 1px solid #c5e8f3; padding: 20px;">
+
+        {{ form_widget(form) }}
+
+        {{ form_label(form) }}
+
+        {% if form_errors(form) %}
+            {{ form_errors(form) }}
+        {% endif %}
+    </div>
+{% endblock _form_confirmStatus_row %}
+
+{% block _form_confirmStatus_label %}
+    {% spaceless %}
+        {% if not compound %}
+            {% set label_attr = label_attr|merge({'for': id}) %}
+        {% endif %}
+        {% if required %}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+        {% endif %}
+        {% if label is empty %}
+            {% set label = name|humanize %}
+        {% endif %}
+
+        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+    {% if required %}
+        <span class="required" title="This field is required">*</span>
+    {% endif %}
+    {{ label|trans({}, translation_domain) }}
+    </label>
+    {% endspaceless %}
+{% endblock _form_confirmStatus_label %}
+
+{% block _form_transfer_option_row %}
+    <div>
+        {{ form_label(form) }}
+        <div style="margin-left: 125px;">
+            {{ form_widget(form) }}
+            {{ form_errors(form) }}
+        </div>
+    </div>
+{% endblock _form_transfer_option_row %}
+
+{% block _form_transfer_option_widget %}
+
+    {% for child in form.children %}
+        <table>
+            <tr>
+                <td style="vertical-align:top; white-space: nowrap">
+                    {{ form_widget(child) }}
+                    <strong>{{ child.vars.value }}:</strong>
+                </td>
+                <td>
+                    <label for="{{child.vars.id}}" style="width: 100%;">{{child.vars.label}}</label>
+                    {% if child.vars.value == 2 %}
+                        {% if child.parent.parent.choice1 is defined %}
+                            <div class="choice1-wrapper hide" style="margin: 20px;">
+                            {{ form_label(child.parent.parent.choice1) }}
+                            {{ form_widget(child.parent.parent.choice1) }}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                </td>
+            </tr>
+        </table>
+    {% endfor %}
+
+{% endblock _form_transfer_option_widget %}

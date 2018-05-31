@@ -1,0 +1,27 @@
+services:
+    stw.email:
+        class: IIAB\StudentTransferBundle\Service\EmailService
+        arguments: ["@service_container"]
+
+    stw.check.address:
+            class: IIAB\StudentTransferBundle\Service\CheckAddressService
+            arguments: ["@doctrine.orm.default_entity_manager"]
+
+    stw.zoning:
+        class: IIAB\StudentTransferBundle\Service\ZoningAPIService
+
+    stw.pdf:
+            class: IIAB\StudentTransferBundle\Service\GeneratePDFService
+            arguments: ["@service_container"]
+
+    stw.validator.validateAddress:
+            class: IIAB\StudentTransferBundle\Form\Validators\ValidAddressValidator
+            arguments: ["@doctrine.orm.default_entity_manager"]
+            tags:
+                - { name: validator.constraint_validator, alias: validate_address }
+
+    stw.validator.validateAge:
+        class: IIAB\StudentTransferBundle\Form\Validators\ValidAgeValidator
+        arguments: ["@doctrine.orm.default_entity_manager"]
+        tags:
+            - { name: validator.constraint_validator, alias: validate_age }

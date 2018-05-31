@@ -1,0 +1,50 @@
+{% extends '@IIABStudentTransfer/layout.html.twig' %}
+
+{% block pageTitle %}<h2>{{ 'welcome.header'|trans( {} , 'IIABStudentTransferBundle') }}</h2>{% endblock %}
+{% block body %}
+
+{% set formDisplayed = [] %}
+
+<section>
+    {% if is_granted( 'IS_AUTHENTICATED_REMEMBERED' ) %}
+        <a title="{{ 'base.logout'|trans( {} , 'IIABStudentTransferBundle' )|escape( 'html_attr' ) }}" href="{{ url( 'fos_user_security_logout' ) }}">{{ 'base.logout'|trans( {} , 'IIABStudentTransferBundle' ) }} {{ app.user.firstname }}</a>
+    {% endif %}
+
+    {{ render( controller( 'IIABStudentTransferBundle:Default:message' , { setting: 'frontpage message' } ) ) }}
+    <ul>
+    {% if openEnrollment is defined and openEnrollment is not empty %}
+        {% set lateM2M = false %}
+        {% if openEnrollment[0].afterLotteryBeginningDate is not null and openEnrollment[0].afterLotteryBeginningDate|date('Y-m-d') <= "now"|date('Y-m-d') %}
+            {% if( openEnrollment[0].isFormAvailable(1) ) %}
+                {% set lateM2M = true %}
+            {% endif %}
+        {% endif %}
+        {% for enrollment in openEnrollment %}
+            {% if enrollment.forms is not empty %}
+
+                {% for form in enrollment.forms if form.active and form.form.route is not empty %}
+                    {%  set formDisplayed = formDisplayed|merge([ form.form.id ]) %}
+                    <li><a class="button button-rounded button-primary" href="{{ path( form.form.route , { 'step': 1 , 'formID': form.form.id , 'enrollment': enrollment.id } ) }}">{% if lateM2M and form.form.id == 1 %}Late {% endif %}{{ form.form.formName }}</a></li>
+                {% endfor %}
+
+            {% endif %}
+        {% endfor %}
+
+    {% endif %}
+
+    {% if specialEnrollments is defined and specialEnrollments is not empty %}
+        {% for specialEnrollment in specialEnrollments %}
+            {% if formDisplayed[ specialEnrollment.form.id ] is not defined %}
+                {%  set formDisplayed = formDisplayed|merge([ specialEnrollment.form.id ]) %}
+                <li><a class="button button-rounded button-primary" href="{{ path( specialEnrollment.form.route , { 'step': 1 , 'formID': specialEnrollment.form.id , 'enrollment': specialEnrollment.enrollmentPeriod.id } ) }}">{{ specialEnrollment.form.formName }}</a></li>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {% if is_granted( 'IS_AUTHENTICATED_REMEMBERED' ) %}
+        <li><button class="button button-rounded button-royal" type="button" name="" onclick="window.location.assign( '{{ url( 'sonata_admin_dashboard' ) }}' );">{{ 'admin.title'|trans( {} , 'IIABStudentTransferBundle' ) }}</button></li>
+    {% endif %}
+    </ul>
+
+</section>
+{% endblock %}

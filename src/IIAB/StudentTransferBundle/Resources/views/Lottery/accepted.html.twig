@@ -1,0 +1,14 @@
+{% extends '@IIABStudentTransfer/layout.html.twig' %}
+
+{% block title %}{{ 'accepted.title'|trans( { '%form%': submission.formID } , 'IIABStudentTransferBundle') }}{% endblock %}
+
+{% block pageTitle %}<h1>{{ 'accepted.header'|trans( { '%form%': submission.formID } , 'IIABStudentTransferBundle') }}</h1>{% endblock %}
+
+{% block body %}
+
+    <p>{{ 'accepted.message'|trans( {} , 'IIABStudentTransferBundle')|raw }}</p>
+    <p>{{ 'accepted.help'|trans( {} , 'IIABStudentTransferBundle') }}</p>
+    <p><a href="{{ url( 'stw_index' ) }}" class="button button-rounded">{{ 'forms.finish'|trans( {} , 'IIABStudentTransferBundle' ) }}</a></p>
+
+{% endblock %}
+

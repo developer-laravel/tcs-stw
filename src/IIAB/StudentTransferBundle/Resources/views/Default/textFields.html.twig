@@ -1,0 +1,9 @@
+{% for field in textFields %}
+<div class="group">
+    {% if field.value == '99' or field.value == '00' %}
+        <label>{{ field.label }}:</label> <span>{% if field.value == '99' %}Pre-K{% else %}K{% endif %}</span>
+    {% else %}
+        <label>{{ field.label }}:</label> <span>{{ field.value | raw }}</span>
+    {% endif %}
+</div>
+{% endfor %}

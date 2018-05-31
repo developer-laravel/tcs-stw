@@ -1,0 +1,108 @@
+{% extends '@IIABStudentTransfer/layout.html.twig' %}
+
+{% block title %}{{ 'personnel.title'|trans( {} , 'IIABStudentTransferBundle') }}{% endblock %}
+
+{% block pageTitle %}<h1>{{ 'personnel.header'|trans( {} , 'IIABStudentTransferBundle') }}</h1>
+    <p>
+        {% set otherFiles = false %}
+        {% if openEnrollment.personnelPDF is not empty and app.request.locale == 'en' %}
+            {% set otherFiles = true %}
+            <a href="{{ openEnrollment.personnelPDF }}" onclick="window.open( this.href );return false;">{{ 'footer.helpDocument3'|trans( {} , 'IIABStudentTransferBundle' ) }}</a>
+        {% endif %}
+        {% if openEnrollment.personnelPDFES is not empty and app.request.locale == 'es' %}
+            {% set otherFiles = true %}
+            <a href="{{ openEnrollment.personnelPDFES }}" onclick="window.open( this.href );return false;">{{ 'footer.helpDocument3'|trans( {} , 'IIABStudentTransferBundle' ) }}</a>
+        {% endif %}
+
+        {% if openEnrollment.infoPDF is not empty and app.request.locale == 'en' %}
+            {% if otherFiles %}
+                &nbsp;|&nbsp;
+            {% endif %}
+            <a href="{{ openEnrollment.infoPDF }}" onclick="window.open( this.href );return false;">{{ 'footer.helpDocument1'|trans( {} , 'IIABStudentTransferBundle' ) }}</a>
+        {% endif %}
+        {% if openEnrollment.infoPDFES is not empty and app.request.locale == 'es' %}
+            {% if otherFiles %}
+                &nbsp;|&nbsp;
+            {% endif %}
+            <a href="{{ openEnrollment.infoPDFES }}" onclick="window.open( this.href );return false;">{{ 'footer.helpDocument1'|trans( {} , 'IIABStudentTransferBundle' ) }}</a>
+        {% endif %}
+    </p>
+{% endblock %}
+
+{% block body %}
+
+    {% if app.request.locale == 'en' %}
+        {% if message.settingValue is defined and message.settingValue is not empty and step == 0 %}
+            <div class="clearfix clear"></div>
+            <div class="notice message">
+                <p>{{ message.settingValue }}</p>
+            </div>
+        {% endif %}
+    {% else %}
+        {% if message.settingValueEs is defined and message.settingValueEs is not empty and step == 0 %}
+            <div class="clearfix clear"></div>
+            <div class="notice message">
+                <p>{{ message.settingValueEs }}</p>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <p class="action"><a href="{{ url( 'stw_index' ) }}">{{ 'links.start'|trans( {} , 'IIABStudentTransferBundle') }}</a>
+        {% if step > 0 %} | <a href="{{ url( 'stw_personnel' , { 'step' : step } ) }}">{{ 'links.goBack'|trans( {} , 'IIABStudentTransferBundle') }}</a>{% endif %}
+    </p>
+    {% if step > 0 and step < 4 %}
+        <p class="step">{{ 'base.step'|trans( {} , 'IIABStudentTransferBundle' ) }} {{ step + 1 }}</p>
+    {% endif %}
+
+    {% if step is defined %}
+        <div class="clearfix clear"></div>
+        <p>{{ ('successprep.step' ~ step)|trans( {} , 'IIABStudentTransferBundle' ) }}</p>
+    {% endif %}
+
+    {{ form_start( form , { 'attr': { 'autocomplete': 'off' , 'novalidate': 'novalidate' } } ) }}
+        {{ form_errors( form ) }}
+
+
+        {% if nonFormFields is defined %}
+            {{ include( 'IIABStudentTransferBundle:Default:textFields.html.twig' , { 'textFields': nonFormFields } ) }}
+        {% endif %}
+
+
+        {% if form.studentID is defined %}
+            <div>
+                {{ form_label(form.studentID) }}
+                {{ form_widget(form.studentID) }}
+                <a href="#" onclick="return false;" class="tooltip">
+                    ?
+                    <span>
+                        <img class="callout" src="{{ asset( '/bundles/iiabstudenttransfer/images/callout.gif' ) }}" />
+                        <strong>{{ 'tooltipStudentID.heading'|trans( {} , 'IIABStudentTransferBundle' ) }}</strong><br />
+                        {{ 'tooltipStudentID.body'|trans( {} , 'IIABStudentTransferBundle' )|raw }}
+                    </span>
+                </a>
+            </div>
+        {% endif %}
+
+        {% if form.wrongInfo is defined %}
+            <div class="wrongInfo">
+                {{ form_label(form.wrongInfo) }}
+                {{ form_widget(form.wrongInfo) }}
+            </div>
+        {% endif %}
+
+        {% if form.correctInfo is defined %}
+            <div class="correctInfo">
+                {{ form_label(form.correctInfo) }}
+                {{ form_widget(form.correctInfo) }}
+            </div>
+        {% endif %}
+
+        {{ form_rest(form) }}
+
+    {{ form_end(form) }}
+{% endblock %}
+
+
+{% block disclaimer %}
+    <p>{{ 'personnel.footer.disclaimer'|trans( {} , 'IIABStudentTransferBundle' ) }}</p>
+{% endblock %}

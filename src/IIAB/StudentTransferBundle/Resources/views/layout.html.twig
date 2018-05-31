@@ -1,0 +1,102 @@
+{% extends '::base.html.twig' %}
+
+{% if form is defined %}
+    {% form_theme form '@IIABStudentTransfer/Form/fields.html.twig' %}
+{% endif %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset( 'bundles/iiabstudenttransfer/css/styles.css' ) }}" />
+    <link rel="stylesheet" href="{{ asset( 'bundles/iiabstudenttransfer/css/buttons.css' ) }}" />
+    <link rel="stylesheet" href="{{ asset( 'bundles/iiabstudenttransfer/css/tooltip.css' ) }}?updated=20140507" />
+{% endblock %}
+
+{% block javascripts %}
+    <script type="application/javascript">
+        $( document ).ready(function() {
+
+            $( '#form_transfer_option_0, #form_transfer_option_1, #form_transfer_option_2, #form_transfer_option_3' ).change( function(){
+                var $this = $(this);
+                var $choice = $('.choice1-wrapper');
+
+                if( $this.val() == 2 ){
+                    $choice.show();
+                    $('#form_choice1 option').eq(1).prop('selected', false);
+                } else {
+                    $choice.hide();
+                    $('#form_choice1 option').eq(1).prop('selected', true);
+                }
+                console.log( $('#form_choice1').val() );
+            });
+
+            $( '#form_correctInfo' ).click(function( e ) {
+                e.preventDefault();
+
+                {% if form is defined and 'success-prep' in form.vars.action %}
+                    var confirmResponse = confirm('{{ 'popup.successprep.correctInfo.body'|trans( {} , 'IIABStudentTransferBundle' )|escape('js')  }}');
+                {% else %}
+                    var confirmResponse = confirm('{{ 'popup.correctInfo.body'|trans( {} , 'IIABStudentTransferBundle' )|escape('js')  }}');
+                {% endif %}
+
+                if( confirmResponse == true ) {
+                    $( '#form_correctInfo' ).attr( 'disabled' , 'disabled').html( '{{ 'forms.loading'|trans( {} , 'IIABStudentTransferBundle' )|escape('js')  }}' );
+                    $( '#form_wrongInfo' ).attr( 'disabled' , 'disabled' );
+                    $(this).parents( 'form' ).submit();
+                } else {
+                    $( '#form_correctInfo' ).removeAttr( 'disabled' ).html( '{{ 'forms.correctInfo'|trans( {} , 'IIABStudentTransferBundle' )|escape('js')  }}' );
+                    $( '#form_wrongInfo' ).removeAttr( 'disabled' );
+                }
+                return confirmResponse;
+            });
+            $( '#form_accept' ).click(function( e ) {
+
+                {% if submission is defined and submission.getIsRenewal == 'Renewal' %}
+                    var confirmResponse3 = confirm('{{ 'popup.accept.renewal.body'|trans( {} , 'IIABStudentTransferBundle' )|escape('js')  }}');
+                {% else %}
+                    var confirmResponse3 = confirm('{{ 'popup.accept.body'|trans( {} , 'IIABStudentTransferBundle' )|escape('js')  }}');
+                {% endif %}
+                return confirmResponse3;
+            });
+            $( '#form_decline' ).click(function( e ) {
+                if( $(this).hasClass('waitlist' ) ) {
+                    var confirmResponse2 = confirm('{{ 'popup.waitlist.body'|trans( {} , 'IIABStudentTransferBundle' )|escape('js')  }}');
+                } else {
+                    var confirmResponse2 = confirm('{{ 'popup.decline.body'|trans( {} , 'IIABStudentTransferBundle' )|escape('js')  }}');
+                }
+                return confirmResponse2;
+            });
+            $( '#form_decline_both' ).click(function( e ) {
+                var confirmResponse3 = confirm('{{ 'popup.decline.body'|trans( {} , 'IIABStudentTransferBundle' )|escape('js')  }}');
+                return confirmResponse3;
+            });
+            $( '#form_proceedOption').click(function() {
+                var isChecked = $( '#form_choice3_0' ).prop('checked');
+                if( isChecked )
+                    var confirmResponse = confirm('{{ 'popup.withdrawButton.body'|trans( {} , 'IIABStudentTransferBundle' )|escape('js')  }}');
+                else
+                    var confirmResponse = confirm('{{ 'popup.proceedButton.body'|trans( {} , 'IIABStudentTransferBundle' )|escape('js')  }}');
+                return confirmResponse;
+            });
+            $( '#form_choice3_0' ).change( function( event ) {
+                var isChecked = $(this).prop('checked');
+                if( isChecked ) {
+                    $( '#form_choice1').attr( 'disabled' , 'disabled' );
+                    $( '#form_choice2').attr( 'disabled' , 'disabled' );
+                    $form = $(this).parents( 'form');
+                    $form.attr( 'novalidate' , '1' );
+                } else {
+                    $( '#form_choice1').removeAttr( 'disabled' );
+                    $( '#form_choice2').removeAttr( 'disabled' );
+                    $form = $(this).parents( 'form');
+                    $form.removeAttr( 'novalidate' );
+                }
+            });
+            $('.set-address').click( function() {
+                $this = jQuery(this);
+                        $this.closest('div').find('input').val($(this).html());
+                        $this.closest('ul').parent().hide();
+                    });
+        });
+    </script>
+{% endblock %}

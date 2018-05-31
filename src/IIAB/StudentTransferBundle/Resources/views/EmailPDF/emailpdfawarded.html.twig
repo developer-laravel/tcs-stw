@@ -1,0 +1,147 @@
+{% extends '@IIABStudentTransfer/standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .tab-content .box {
+            padding:20px;
+        }
+        .nav-tabs-custom {
+            margin-bottom:0;
+        }
+        .tab-content .custom-box {
+            border-top:0;
+            border-radius: 0 0 3px 3px;
+        }
+        .date  select{
+            width:80px;
+        }
+        .tab-content .btn {
+            margin:15px 0;
+        }
+    </style>
+{% endblock %}
+{% block sonata_page_content_header %}
+    <h2>Awarded Emails/Letters</h2>
+    {{ render( controller('IIABStudentTransferBundle:Lottery:processingStatus') ) }}
+{% endblock %}
+{% block content %}
+    {{ form_start(form) }}
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active">
+                    <a href="#letter" aria-controls="letter" role="tab" data-toggle="tab">Letters</a>
+                </li>
+                <li role="presentation">
+                    <a href="#email" aria-controls="email" role="tab" data-toggle="tab">Emails</a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="letter">
+                <div class="box custom-box">
+
+                    {#
+                        <div class="col-md-12">
+                            <h3>M2M</h3>
+                        </div>
+
+                        <div class="col-md-12">
+                            {{  form_label(  form.letterTemplate ) }}
+                            {{  form_widget( form.letterTemplate ) }}
+                        </div>
+
+                        <div class="col-md-12">
+                            <h3>Non-M2M</h3>
+                        </div>
+                    #}
+                    <div class="col-md-12">
+                        {{  form_label(  form.letterTemplateNonM2M ) }}
+                        {{  form_widget( form.letterTemplateNonM2M ) }}
+                    </div>
+
+                    <div class="col-md-12">
+                        {{ form_widget( form.saveLetterChanges ) }}
+                    </div>
+
+
+                    <div class="col-md-12" style="margin-top:20px;">
+                        {{ form_label( form.selectForm_letter ) }}
+                        {{ form_widget( form.selectForm_letter , { 'attr' : { 'class' : 'form-control' } } ) }}
+                    </div>
+
+                    <div class="col-md-12">
+                        {{ form_widget(form.sendPDFs, { 'attr' : { 'class' : 'btn btn-primary' } } ) }}
+                        <p>{{ 'emailpdf.pdfNotice' | trans( {} , 'IIABStudentTransferBundle' ) }}</p>
+                        <h3>{{ 'emailpdf.lastGeneratedPDFs' | trans( {} , 'IIABStudentTransferBundle' ) }}</h3>
+                        {% if files is defined and files is not empty %}
+                            <ul>
+                                {% for location in files %}
+                                    <li><a target="_blank" href="{{ asset( "reports/" ~ info.type ~ "/" ~ info.period ~ "/" ~ location ) }}">{{ location }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>No files have been generated yet.</p>
+                        {% endif %}
+                    </div>
+                    <br style="clear:left" />
+                </div>
+                <p>{{ 'emailpdf.acceptanceDateTimeNotice' | trans( {} , 'IIABStudentTransferBundle' ) }}</p>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="email">
+                <div class="box custom-box">
+                    {#
+                        <div class="col-md-12">
+                            <h3>M2M</h3>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                {{  form_label(  form.emailSubject ) }}
+                                {{  form_widget( form.emailSubject ) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 form-group">
+                                {{  form_label(  form.emailBodyHtml ) }}
+                                {{  form_widget( form.emailBodyHtml ) }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <h3>Non-M2M</h3>
+                        </div>
+                    #}
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            {{  form_label(  form.emailSubjectNonM2M ) }}
+                            {{  form_widget( form.emailSubjectNonM2M ) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            {{  form_label(  form.emailBodyHtmlNonM2M ) }}
+                            {{  form_widget( form.emailBodyHtmlNonM2M ) }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        {{ form_widget( form.saveEmailChanges ) }}
+                    </div>
+
+
+                    <div class="col-md-12" style="margin-top:20px;">
+                        {{ form_label( form.selectForm_email ) }}
+                        {{ form_widget( form.selectForm_email , { 'attr' : { 'class' : 'form-control' } } ) }}
+                    </div>
+
+                    <div class="col-md-12" >
+                        {{ form_widget(form.sendEmailsNow, { 'attr' : { 'class' : 'btn btn-primary' } } ) }}
+                    </div>
+                    <br style="clear:left" />
+                </div>
+                <p>{{ 'emailpdf.acceptanceDateTimeNotice' | trans( {} , 'IIABStudentTransferBundle' ) }}</p>
+            </div>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

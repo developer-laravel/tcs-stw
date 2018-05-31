@@ -1,0 +1,129 @@
+{% block subject %}
+    {% spaceless %}
+        Tuscaloosa City Schools Success Prep Application Confirmation: {{ confirmation }}
+    {% endspaceless %}
+{% endblock subject %}
+
+{% block body_text %}
+Hi {{ email }},
+
+An application/referral for TCS Success Prep Academy for your student {{ submission.firstName }} {{ submission.lastName }} has been successfully accepted for consideration! This email does not guarantee that your student will be accepted into Success Prep.
+
+You will be contacted via the contact information provided in the application/referral to schedule an interview. Please note, if your student is not currently enrolled in a TCS school, he/she must be enrolled in a TCS school prior to an interview.
+
+For future reference, your confirmation # is {{ confirmation }}. Please retain a copy of this email for your records.
+
+Please note, you will receive additional updates at this email address as the admission process continues.
+
+Please add choice@tusc.k12.al.us to your address list to ensure you receive future status updates of your application.
+
+This is an automated email message from a mailbox that does not accept replies.  If you have questions about the application process, please call 205.759.3700 between 8:30 a.m. and 4:00 p.m., Monday through Friday.
+
+Thanks,
+Tuscaloosa City Schools
+{% endblock body_text %}
+
+{% block body_html %}
+
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <!-- If you delete this meta tag, Half Life 3 will never be released. -->
+        <meta name="viewport" content="width=device-width"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>Confirmation Email</title>
+    </head>
+    <body bgcolor="#FFFFFF" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;-webkit-font-smoothing: antialiased;-webkit-text-size-adjust: none;width: 100% !important;height: 100%">
+
+    <!-- HEADER -->
+    <table class="head-wrap" bgcolor="#FFFFFF" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;width: 100%;background: url(https://Choice.tuscaloosacityschools.com/img/BodyBackground.jpg) repeat-x #FFF;height: 140px">
+        <tr style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"></td>
+            <td class="header container" style="margin: 0 auto !important;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;display: block !important;max-width: 600px !important;clear: both !important">
+                <div class="content" style="margin: 0 auto;padding: 15px;font-family: Helvetica, Helvetica, Arial, sans-serif;max-width: 600px;display: block">
+                    <table style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;width: 100%">
+                        <tr style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+                            <td align="center" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+                                <h3 style="color: #FFF;margin: 0;padding: 0;font-family: HelveticaNeue-Light, Helvetica, Arial, Lucida Grande, sans-serif;line-height: 1.1;margin-bottom: 15px;font-weight: 500;font-size: 27px">Tuscaloosa City School Success Prep Application</h3>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"></td>
+        </tr>
+    </table>
+    <!-- /HEADER --><!-- BODY -->
+    <table class="body-wrap" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;width: 100%">
+        <tr style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"> </td>
+            <td class="container" bgcolor="#FFFFFF" style="margin: 0 auto !important;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;display: block !important;max-width: 600px !important;clear: both !important">
+
+                <div class="content" style="margin: 0 auto;padding: 15px;font-family: Helvetica, Helvetica, Arial, sans-serif;max-width: 600px;display: block">
+                    <table style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;width: 100%">
+                        <tr style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+                            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+
+                                <h3 style="margin: 0;padding: 0;font-family: HelveticaNeue-Light, Helvetica, Arial, Lucida Grande, sans-serif;line-height: 1.1;margin-bottom: 15px;color: #000;font-weight: 500;font-size: 27px">Hi {{ email }},</h3>
+
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">
+                                    An application/referral for TCS Success Prep Academy for your student {{ submission.firstName }} {{ submission.lastName }} has been successfully accepted for consideration! This email does not guarantee that your student will be accepted into Success Prep.
+                                </p>
+
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">
+                                    You will be contacted via the contact information provided in the application/referral to schedule an interview. <span style="font-style: underline;">Please note, if your student is not currently enrolled in a TCS school, he/she must be enrolled in a TCS school prior to an interview.</span>
+                                </p>
+
+                                <!-- Callout Panel -->
+                                <p class="callout" style="margin: 0;padding: 15px;font-family: Helvetica, Helvetica, Arial, sans-serif;background-color: #ECF8FF;margin-bottom: 15px;font-weight: 400;font-size: 14px;line-height: 1.6">
+                                    For future reference, your confirmation # is <strong style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">{{ confirmation }}</strong>. Please retain a copy of this email for your records.
+                                </p><!-- /Callout Panel -->
+
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">
+                                    Please note, you will receive additional updates at this email address as the admission process continues.
+                                </p>
+
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">
+                                    Please add choice@tusc.k12.al.us to your address list to ensure you receive future status updates of your application.
+                                </p>
+
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">
+                                    This is an automated email message from a mailbox that does not accept replies. If you have questions about the application process, please  call 205.759.3700 between 8:30 a.m. and 4:00 p.m., Monday through Friday.
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- /content -->
+            </td>
+            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"> </td>
+        </tr>
+    </table>
+    <!-- /BODY --><!-- FOOTER -->
+    <table class="footer-wrap" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;width: 100%;clear: both !important">
+        <tr style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"></td>
+            <td class="container" style="margin: 0 auto !important;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;display: block !important;max-width: 600px !important;clear: both !important">
+
+                <!-- content -->
+                <div class="content" style="margin: 0 auto;padding: 15px;font-family: Helvetica, Helvetica, Arial, sans-serif;max-width: 600px;display: block">
+                    <table style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;width: 100%">
+                        <tr style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+                            <td align="center" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">
+                                    Tuscaloosa City Schools<br style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"/>1210 21st Avenue | Tuscaloosa, AL 35401 | (205) 759-3700
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- /content -->
+
+            </td>
+            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"></td>
+        </tr>
+    </table>
+    <!-- /FOOTER --></body>
+    </html>
+
+
+{% endblock body_html %}

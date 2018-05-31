@@ -1,0 +1,44 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block fos_user_content %}
+    {% if error %}
+        <div class="alert-box alert radius">
+            <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        </div>
+    {% endif %}
+
+    <form action="{{ path("fos_user_security_check") }}" method="post">
+        <fieldset>
+            <legend>Administrator Login</legend>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}"/>
+
+            <div class="row collapse">
+                <div class="small-4 medium-4 columns">
+                    <label class="prefix" for="username">{{ 'security.login.username'|trans }}</label>
+                </div>
+                <div class="small-8 medium-8 columns">
+                    <input type="text" placeholder="Username" id="username" name="_username" value="{{ last_username }}" required="required"/>
+                </div>
+            </div>
+
+            <div class="row collapse">
+                <div class="small-4 medium-4 columns">
+                    <label class="prefix" for="password">{{ 'security.login.password'|trans }}</label>
+                </div>
+                <div class="small-8 medium-8 columns">
+                    <input type="password" placeholder="Password" id="password" name="_password" required="required"/>
+                </div>
+            </div>
+            <div class="row collapse text-center">
+                <input type="checkbox" id="remember_me" name="_remember_me" value="on"/>
+                <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+            </div>
+            <div class="row collapse">
+            <input type="submit" id="_submit" name="_submit" class="button small-12 columns noMarginBottom" value="{{ 'security.login.submit'|trans }}"/>
+            </div>
+        </fieldset>
+    </form>
+{% endblock fos_user_content %}

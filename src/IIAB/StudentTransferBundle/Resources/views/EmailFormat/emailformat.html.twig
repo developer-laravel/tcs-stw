@@ -1,0 +1,33 @@
+{% extends '@IIABStudentTransfer/standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block sonata_page_content_header %}
+    <h2>{{ info.title }}</h2>
+    {{ render( controller('IIABStudentTransferBundle:Lottery:processingStatus') ) }}
+{% endblock %}
+{% block content %}
+    {{ form_start(form) }}
+                <div class="box custom-box">
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            {{  form_label(  form.emailSubject ) }}
+                            {{  form_widget( form.emailSubject ) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            {{  form_label(  form.emailBodyHtml ) }}
+                            {{  form_widget( form.emailBodyHtml ) }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        {{ form_widget( form.saveEmailChanges ) }}
+                    </div>
+                    <br style="clear:left" />
+                </div>
+            </div>
+    {{ form_end(form) }}
+{% endblock %}

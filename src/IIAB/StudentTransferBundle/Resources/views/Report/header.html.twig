@@ -1,0 +1,11 @@
+<div style="text-align: center; padding-top: 20px;">
+<img src="img/Logo.jpg" height="96"/>
+</div>
+
+<div class="push">
+    {% if reportDate is defined and reportDate is not empty %}
+        {{ reportDate|date('m/d/Y') }}
+    {% else %}
+        {{ "now"|date('m/d/Y') }}
+    {% endif %}<br />
+</div>

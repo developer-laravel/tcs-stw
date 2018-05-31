@@ -1,0 +1,45 @@
+{% extends '@IIABStudentTransfer/layout.html.twig' %}
+
+{% block title %}{{ 'success.title'|trans( {} , 'IIABStudentTransferBundle') }}{% endblock %}
+
+{% block pageTitle %}
+    <h1>
+        {% if submission and submission.formID.id == 9 %}
+            {{ 'successprep.success.header'|trans( {} , 'IIABStudentTransferBundle') }}
+        {% else %}
+            {{ 'success.header'|trans( {} , 'IIABStudentTransferBundle') }}
+        {% endif %}
+    </h1>
+{% endblock pageTitle %}
+
+{% block body %}
+
+    {% if confirmation is defined %}
+        <div class="success button button-block button-rounded button-highlight">{{ 'success.confirmation'|trans( { '%confirmation%': confirmation } , 'IIABStudentTransferBundle') }}<br /><span>{{ confirmation }}</span></div>
+
+        {% if submission %}
+
+            {% if submission.formID.id == 2 %}
+                <p>{{ 'personnel.success.message'|trans( { '%confirmation%': confirmation } , 'IIABStudentTransferBundle')|raw }}</p>
+            {% elseif submission.formID.id == 5 %}
+                <p>{{ 'senior.success.message'|trans( { '%confirmation%': confirmation } , 'IIABStudentTransferBundle')|raw }}</p>
+            {% elseif submission.formID.id == 6 %}
+                <p>{{ 'accountability.success.message'|trans( { '%confirmation%': confirmation } , 'IIABStudentTransferBundle')|raw }}</p>
+            {% elseif submission.formID.id == 7 %}
+                <p>{{ 'iep.success.message'|trans( { '%confirmation%': confirmation } , 'IIABStudentTransferBundle')|raw }}</p>
+            {% elseif submission.formID.id == 8 %}
+                <p>{{ 'schoolchoice.success.message'|trans( { '%confirmation%': confirmation } , 'IIABStudentTransferBundle')|raw }}</p>
+            {% elseif submission.formID.id == 9 %}
+                <p>{{ 'successprep.success.message'|trans( { '%confirmation%': confirmation } , 'IIABStudentTransferBundle')|raw }}</p>
+            {% else %}
+                <p>{{ 'success.message'|trans( { '%confirmation%': confirmation } , 'IIABStudentTransferBundle')|raw }}</p>
+            {% endif %}
+
+        {% else %}
+            <p>{{ 'success.message'|trans( { '%confirmation%': confirmation } , 'IIABStudentTransferBundle')|raw }}</p>
+        {% endif %}
+        <p>{{ 'success.help'|trans( { '%confirmation%': confirmation } , 'IIABStudentTransferBundle') }}</p>
+        <p><a href="{{ url( 'stw_index' ) }}" class="button button-rounded">{{ 'forms.finish'|trans( {} , 'IIABStudentTransferBundle' ) }}</a></p>
+    {% endif %}
+{% endblock body %}
+

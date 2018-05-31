@@ -1,0 +1,11 @@
+{% extends '@IIABStudentTransfer/layout.html.twig' %}
+
+{% block title %}{{ 'alreadySubmitted.title'|trans( {} , 'IIABStudentTransferBundle') }}{% endblock %}
+
+{% block pageTitle %}<h1>{{ 'alreadySubmitted.title'|trans( {} , 'IIABStudentTransferBundle') }}</h1>{% endblock %}
+
+{% block body %}
+    <div class="notice button button-block button-rounded">{{ 'alreadySubmitted.message'|trans( {} , 'IIABStudentTransferBundle') }}</div>
+    <p>{{ 'alreadySubmitted.help'|trans( {} , 'IIABStudentTransferBundle') }}</p>
+    <p><a href="{{ url( 'stw_index' ) }}" class="button button-rounded">{{ 'forms.finish'|trans( {} , 'IIABStudentTransferBundle' ) }}</a></p>
+{% endblock %}

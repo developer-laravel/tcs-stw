@@ -1,0 +1,105 @@
+{% block subject %}
+    {% spaceless %}
+        {{ submission.formID }} Final Status for Confirmation Number: {{ submission }}
+    {% endspaceless %}
+{% endblock subject %}
+
+{% block body_text %}
+Hi {{ submission.email }},
+
+Guardian of {{ submission.firstName }} {{ submission.lastName }}
+
+RE: {{ submission.formID }} Final Status for Confirmation Number: {{ submission }}
+
+This is to confirm that you have updated your student's Transfer application offer to Accepted.
+{% if submission.formID.id == 2 and submission.getIsRenewal != 'Renewal' %}
+
+You will need to take a copy of this email to {{ submission.awardedSchoolId }} and enroll {{ submission.firstName }} {{ submission.lastName }}.</p>
+{% endif %}
+
+Please save this email and/or record this confirmation number for your records.
+
+Please add choice@tusc.k12.al.us to your address list to ensure you receive future status updates of your application.
+
+This is an automated email message from a mailbox that does not accept replies. If you have any questions regarding the {{ submission.formID }} process, please contact TCS Attendance Office.
+
+Thanks,
+Tuscaloosa City Schools
+{% endblock body_text %}
+
+{% block body_html %}
+
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <!-- If you delete this meta tag, Half Life 3 will never be released. -->
+        <meta name="viewport" content="width=device-width"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>Accepted Email</title>
+    </head>
+    <body bgcolor="#FFFFFF" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;-webkit-font-smoothing: antialiased;-webkit-text-size-adjust: none;width: 100% !important;height: 100%">
+    <!-- HEADER -->
+    <table class="head-wrap" bgcolor="#FFFFFF" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;width: 100%;background: url(https://Choice.tuscaloosacityschools.com/img/BodyBackground.jpg) repeat-x #FFF;height: 140px">
+        <tr style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"></td>
+            <td class="header container" style="margin: 0 auto !important;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;display: block !important;max-width: 600px !important;clear: both !important"><div class="content" style="margin: 0 auto;padding: 15px;font-family: Helvetica, Helvetica, Arial, sans-serif;max-width: 600px;display: block">
+                    <table style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;width: 100%">
+                        <tr style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+                            <td align="center" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"><h3 style="color: #FFF;margin: 0;padding: 0;font-family: HelveticaNeue-Light, Helvetica, Arial, Lucida Grande, sans-serif;line-height: 1.1;margin-bottom: 15px;font-weight: 500;font-size: 27px">Tuscaloosa City School Transfer Application</h3></td>
+                        </tr>
+                    </table>
+                </div></td>
+            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"></td>
+        </tr>
+    </table>
+    <!-- /HEADER -->
+    <!-- BODY -->
+    <table class="body-wrap" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;width: 100%">
+        <tr style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"> </td>
+            <td class="container" bgcolor="#FFFFFF" style="margin: 0 auto !important;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;display: block !important;max-width: 600px !important;clear: both !important"><div class="content" style="margin: 0 auto;padding: 15px;font-family: Helvetica, Helvetica, Arial, sans-serif;max-width: 600px;display: block">
+                    <table style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;width: 100%">
+                        <tr style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+                            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"><h3 style="margin: 0;padding: 0;font-family: HelveticaNeue-Light, Helvetica, Arial, Lucida Grande, sans-serif;line-height: 1.1;margin-bottom: 15px;color: #000;font-weight: 500;font-size: 27px">Hi {{ submission.email }},</h3>
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">Guardian of {{ submission.firstName }} {{ submission.lastName }}</p>
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">RE: {{ submission.formID }} Final Status for Confirmation Number: {{ submission }}</p>
+
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">This is to confirm that you have updated your student's Transfer application offer to <strong>Accepted</strong>.
+
+                                {% if submission.formID.id == 2 and submission.getIsRenewal != 'Renewal' %}
+                                    <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">You will need to take a copy of this email to {{ submission.awardedSchoolId }} and enroll  {{ submission.firstName }} {{ submission.lastName }}.</p>
+                                {% endif %}
+
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">Please save this email and/or record this confirmation number for your records.</p>
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">Please add choice@tusc.k12.al.us to your address list to ensure you receive future status updates of your application.</p>
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">This is an automated email message from a mailbox that does not accept replies. If you have any questions regarding the {{ submission.formID }} process, please contact TCS Attendance Office.</p></td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- /content --></td>
+            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"> </td>
+        </tr>
+    </table>
+    <!-- /BODY -->
+    <!-- FOOTER -->
+    <table class="footer-wrap" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;width: 100%;clear: both !important">
+        <tr style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"></td>
+            <td class="container" style="margin: 0 auto !important;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;display: block !important;max-width: 600px !important;clear: both !important"><!-- content -->
+                <div class="content" style="margin: 0 auto;padding: 15px;font-family: Helvetica, Helvetica, Arial, sans-serif;max-width: 600px;display: block">
+                    <table style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;width: 100%">
+                        <tr style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+                            <td align="center" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"><p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6"> Tuscaloosa City Schools<br style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"/>
+                                    1210 21st Avenue | Tuscaloosa, AL 35401 | (205) 759-3700 </p></td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- /content --></td>
+            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"></td>
+        </tr>
+    </table>
+    <!-- /FOOTER -->
+    </body>
+    </html>
+
+
+{% endblock body_html %}

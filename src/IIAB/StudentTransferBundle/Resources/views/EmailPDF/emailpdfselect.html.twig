@@ -1,0 +1,20 @@
+{% extends '@IIABStudentTransfer/standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        form { margin: 0 35px; }
+    </style>
+{% endblock %}
+{% block sonata_page_content_header %}
+    <h2>{{ 'emailpdf.selectPeriod'|trans( {} , 'IIABStudentTransferBundle' ) }}</h2>
+    {{ render( controller('IIABStudentTransferBundle:Lottery:processingStatus') ) }}
+{% endblock %}
+{% block content %}
+    {{ form_start(form) }}
+    {% if form.selectPeriod is defined and form.selectPeriod is not empty %}
+        {{ form_widget(form.selectPeriod) }}
+        {{ form_widget(form.saveEnrollmentPeriod) }}
+    {% endif %}
+    {{ form_end(form) }}
+{% endblock %}

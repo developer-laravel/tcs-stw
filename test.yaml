@@ -1,0 +1,10 @@
+ shared_database_host: 127.0.0.1
+    shared_database_port: 3306
+    shared_database_name: tcs_shared
+    shared_database_user: root
+    shared_database_password:
+
+
+
+
+    php	bin/console assets:install

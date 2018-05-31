@@ -1,0 +1,720 @@
+{% extends 'SonataAdminBundle::standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css" media="all">
+        .modal-backdrop{
+            z-index: 5 !important;
+        }
+        .cke_combo__dynamic .cke_combo_text , .dynamic.cke_combopanel{
+            width: auto;
+        }
+        .select2-container {
+            width: 200px;
+        }
+        .alert-error {
+            background-color: rgba(255,0,0,.50);
+        }
+        .existingtable td, .existingtable th {
+            padding: 5px;
+        }
+        .logo img{
+            max-width: 230px;
+            max-height: auto;
+        }
+        {% if admin.uniqId is defined %}
+        #sonata-ba-field-container-{{ admin.uniqId }}_submissionData input {
+            border: none;
+            width: 100%;
+        }
+        .submissionData input {
+            width: 95%;
+            padding:5px;
+        }
+        div[id$='_afterLotterySubmission'] .sonata-ba-field {
+            display: none;
+        }
+        div.sonata-medium-date div[id$='_time'] {
+            margin-left: 20px;
+        }
+
+        div.sonata-medium-date div[id$='_time'] div {
+            display: inline-block;
+            float: none;
+        }
+
+        #sonata-ba-field-container-{{ admin.uniqId }}_Other-Reason {
+            display: none;
+        }
+        #sonata-ba-field-container-{{ admin.uniqId }}_m2mPDFInfo,
+        #sonata-ba-field-container-{{ admin.uniqId }}_m2mPDFFAQs,
+        #sonata-ba-field-container-{{ admin.uniqId }}_personnelPDF,
+        #sonata-ba-field-container-{{ admin.uniqId }}_infoPDF,
+        #sonata-ba-field-container-{{ admin.uniqId }}_spedPDFInfo
+        {
+            width: 50%;
+            float: left;
+        }
+        {% endif %}
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+
+
+    <script type="application/javascript">
+        $(document).ready(function () {
+        {% if admin.uniqId is defined %}
+
+            if( $("#{{ admin.uniqId }}_studentID").length > 0 ) {
+                var xhr;
+                var lastID = 0;
+                //var selectedEnrollment = $("#{{ admin.uniqId }}_enrollmentPeriod").find( 'option:selected' );
+                $("#{{ admin.uniqId }}_enrollmentPeriod").select2();
+                $("#{{ admin.uniqId }}_enrolled").select2();
+                $("#{{ admin.uniqId }}_race").select2();
+                $("#{{ admin.uniqId }}_grade").select2();
+                $("#{{ admin.uniqId }}_passing").select2();
+                $("#{{ admin.uniqId }}_Reason").select2();
+                //$("#{{ admin.uniqId }}_firstChoice").select2({width:'resolve'});
+                //$("#{{ admin.uniqId }}_secondChoice").select2({width:'resolve'});
+                $("#{{ admin.uniqId }}_studentID").keydown( function( e ) {
+                    // Allow: backspace, delete, tab, escape, enter and .
+                    var meta = e.metaKey;
+                    var key = e.charCode || e.keyCode || 0;
+                    // allow backspace, tab, delete, enter, arrows, numbers and keypad numbers ONLY
+                    // home, end, period, and numpad decimal
+                    return (
+                            key == 8 ||
+                                    key == 9 ||
+                                    key == 13 ||
+                                    key == 46 ||
+                                    ( meta == true && key == 65 ) ||
+                                    ( meta == true && key == 88 ) ||
+                                    ( meta == true && key == 86 ) ||
+                                    key == 110 ||
+                                    key == 190 ||
+                                    (key >= 35 && key <= 40) ||
+                                    (key >= 48 && key <= 57) ||
+                                    (key >= 96 && key <= 105));
+                });
+
+                jQuery('button.resend-email').click( function(){
+
+                    var $this = jQuery(this);
+                    var email_type = $this.data('email-type');
+                    var submission_id = $this.data('submission-id');
+                    var email_address = jQuery('input', $this.closest('div') ).val();
+
+                    jQuery('span', $this).html( ' <i class="fa fa-spinner fa-spin"></i>' );
+
+                    email_address = ( typeof email_type != "undefined") ? email_address : '';
+
+                    if( typeof email_type != "undefined"){
+
+                        jQuery.ajax({
+                            'url': '{{ url( 'ajax_resend_email' )|e('js') }}',
+                            'dataType': 'json',
+                            'data': {
+                                'email_type': email_type,
+                                'submission_id': submission_id,
+                                'email_address': email_address
+                            }
+                        }).success(function( msg ) {
+
+                            if( msg.error ){
+                                jQuery('span', $this).html( '' );
+                                alert( msg.error );
+                            } else {
+                                jQuery('span', $this).html( msg.success );
+                            }
+                        }).error( function(){
+                            jQuery('span', $this).html( '' );
+                            alert( 'Failed to send Email' );
+                        });
+                    }
+                });
+
+
+                $("#{{ admin.uniqId }}_enrolled").change( function() {
+                    if( $(this).val() == 0 ) {
+                        //Selection is No, means a new student.
+                        $('.activeStudent').addClass('hide');
+                        $('.newStudent').removeClass('hide');
+                        $("#{{ admin.uniqId }}_studentID").removeAttr( 'required' );
+                        //$('.newStudent').find('input').each(function() {
+                        //    $(this).attr( 'required' , 'attr' );
+                        //});
+
+                        $firstChoice = $("#{{ admin.uniqId }}_firstChoice");
+                        $secondChoice = $("#{{ admin.uniqId }}_secondChoice");
+                        var selectedEnrollment = $("#{{ admin.uniqId }}_enrollmentPeriod").val();
+                        var url = Routing.generate( 'ajax_filter_schools_nonstudent' , { _sonata_admin: 'sonata.admin.submissions'  } , true);
+
+                        if ( !xhr || xhr.readyState === 4 ) {
+                            xhr = $.getJSON( url , { enrollment: selectedEnrollment }, function(data) {
+                                if( data.success ) {
+                                    $firstChoice.html('<option value=""></option>').append( $.map( data.schools , function(v){ return $('<option>', { val: v.id, text: v.text }); })).select2();
+                                    $secondChoice.html('<option value=""></option>').append( $.map( data.schools , function(v){ return $('<option>', { val: v.id, text: v.text }); })).select2();
+                                }
+                            });
+                        }
+                    }
+                    if( $(this).val() == 1 ) {
+                        //Selection is Yes, means NOT a new student to HSV CITY.
+                        $('.activeStudent').removeClass('hide');
+                        $("#{{ admin.uniqId }}_studentID").attr( 'required' , 'required' );
+                        //$('.newStudent').find('input').each(function() {
+                        //    $(this).val('').removeAttr( 'required' );
+                        //});
+                        $('.newStudent').addClass('hide');
+                    }
+                });
+
+                if( $(".new-submission").length > 0 ) {
+                    $("#{{ admin.uniqId }}_studentID.new-submission").keyup(function (event) {
+                        var inputValue = $(this).val();
+                        var $help = $(this).next('span.help-block');
+
+                        $name = $("#{{ admin.uniqId }}_name");
+                        $address = $("#{{ admin.uniqId }}_address");
+                        $existing = $(".existing.col-md-12");
+                        $existingButton = $(".btn.btn-info.existing-button");
+
+                        if (inputValue.length > 9) {
+                            $firstChoice = $("#{{ admin.uniqId }}_firstChoice");
+                            $secondChoice = $("#{{ admin.uniqId }}_secondChoice");
+                            var selectedEnrollment = $("#{{ admin.uniqId }}_enrollmentPeriod").val();
+                            var passing = $("#{{ admin.uniqId }}_passing").val();
+
+                            var url = '{{ url('ajax_filter_schools', {
+                                'studentID': 'replace_student_id',
+                                _sonata_admin: 'sonata.admin.submissions',
+                                'passing': 'replace_passing'
+                            }) }}';
+
+                            url = url.replace( 'amp;', '&' );
+                            url = url.replace( 'replace_student_id', inputValue);
+                            url = url.replace( 'replace_passing', passing);
+
+                            if ((!xhr || xhr.readyState === 4 ) && lastID != inputValue) {
+                                lastID = inputValue;
+                                if ($help.length > 0)
+                                    $help.html('Looking up Student ID...');
+
+                                xhr = $.getJSON(url, {
+                                    studentID: inputValue,
+                                    enrollment: selectedEnrollment
+                                }, function (data) {
+                                    console.log(data);
+                                    if (data.error) {
+                                        if ($help.length > 0)
+                                            $help.html(data.error);
+                                        else
+                                            alert(data.error);
+                                        $firstChoice.html('<option value=""></option>');
+                                        $secondChoice.html('<option value=""></option>')
+
+                                        $name.val('');
+                                        $('.custom-data').remove();
+                                        $address.val('');
+                                        $existing.addClass('hide');
+                                        $existing.find('.box-body table').remove();
+                                        $existingButton.addClass('hide');
+                                    } else {
+
+                                        if (data.success) {
+                                            $help.html('Student found, schools are populate below.');
+
+                                            $firstChoice.html('<option value=""></option>').append($.map(data.schools, function (v) {
+                                                return $('<option>', {val: v.id, text: v.text});
+                                            })).select2();
+                                            $secondChoice.html('<option value=""></option>').append($.map(data.schools, function (v) {
+                                                return $('<option>', {val: v.id, text: v.text});
+                                            })).select2();
+
+                                            $name.val(data.name);
+                                            $address.val(data.address);
+                                            $('.custom-data').remove();
+                                            var dob = data.dob;
+                                            var grade = data.grade;
+                                            var nextGrade = data.nextGrade;
+                                            var currentSchool = data.currentSchool;
+                                            var race = data.race;
+                                            var zonedSchools = data.zonedSchools;
+                                            var $parent = $address.parents('.form-group');
+                                            var html = '<div class="custom-data form-group"><label class="control-label">Date of Birth:</label> ' + dob + '</div>';
+                                            html += '<div class="custom-data form-group"><label class="control-label">Grade:</label> ' + grade + '</div>';
+                                            html += '<div class="custom-data form-group"><label class="control-label">Next Grade:</label> ' + nextGrade + '</div>';
+                                            html += '<div class="custom-data form-group"><label class="control-label">Race:</label> ' + race + '</div>';
+                                            html += '<div class="custom-data form-group"><label class="control-label">Current School:</label> ' + currentSchool + '</div>';
+                                            html += '<div class="custom-data form-group"><label class="control-label">Zoned Schools:</label> ' + zonedSchools.Elementary + ' , ' + zonedSchools.Middle + ' , ' + zonedSchools.High + '</div>';
+                                            $parent.after(html);
+                                        }
+                                        if (data.submission.length > 0) {
+                                            $existing.removeClass('hide');
+                                            $existing.find('.box-body table').remove();
+                                            var table = '<table class="existingtable" width="100%" border="1" cellspacing="3" cellpadding="5"><thead><tr><th>Confirmation Number</th><th>Date Submitted</th><th>First Choice</th><th>Second Choice</th><th>Status</th></tr></thead><tbody>';
+                                            $.map(data.submission, function (s) {
+                                                table += '<tr>';
+                                                table += '<td>' + s.confirmationNumber + '</td>';
+                                                table += '<td>' + s.dateTime + '</td>';
+                                                table += '<td>' + s.firstChoice + '</td>';
+                                                table += '<td>' + s.secondChoice + '</td>';
+                                                table += '<td>' + s.status + '</td>';
+                                                table += '</tr>';
+
+                                            })
+                                            table += '</tbody></table>';
+                                            $existing.find('.box-body').append(table);
+                                            $existingButton.removeClass('hide');
+                                        } else {
+                                            $existing.addClass('hide');
+                                            $existingButton.addClass('hide');
+                                        }
+                                    }
+                                });
+                            }
+                        } else {
+                            lastID = 0;
+                            $help.html('Enter State ID #, then schools will populate below.');
+                            $name.val('');
+                            $address.val('');
+                            $('.custom-data').remove();
+                            $existing.addClass('hide');
+                            $existing.find('.box-body table').remove();
+                            $existingButton.addClass('hide');
+                        }
+                    });
+                }
+                $("#{{ admin.uniqId }}_formID").change( function() {
+                    var $sped = $(".sped");
+                    var $super = $(".superintendent");
+                    var $personnel = $(".personnel");
+                    $(".choices").removeClass('hide');
+                    switch( $(this).val() ) {
+
+                        //Handles M2M Transfers.
+                        case '1':
+                        default:
+                            $sped.addClass('hide');
+                            $super.addClass('hide');
+                            $personnel.addClass('hide');
+                            break;
+
+                        //Handles Personnel Transfers
+                        case '2':
+                            $sped.addClass('hide');
+                            $super.addClass('hide');
+                            $personnel.removeClass('hide');
+                            break;
+
+                        //Handles SPED Transfers
+                        case '3':
+                            $sped.removeClass('hide');
+                            $super.addClass('hide');
+                            $personnel.addClass('hide');
+                            break;
+
+                        //Handle Superintendend Transfers
+                        case '4':
+                            $sped.addClass('hide');
+                            $super.removeClass('hide');
+                            $personnel.addClass('hide');
+                            break;
+
+                    }
+                });
+
+                $(document).ready( function(){
+                    var needsAwardedSchool = [2, 3, 4, 11];
+                    var submissionStatus = parseInt($("#{{ admin.uniqId }}_submissionStatus").val(), 10);
+                    var $awardedDiv = $(".awarded-choice");
+
+                    if($.inArray(2, needsAwardedSchool) > -1){
+                        $awardedDiv.removeClass( 'hide' );
+                        $('.select2-container', $awardedDiv).width('100%');
+                    }
+
+                });
+
+                $("#{{ admin.uniqId }}_submissionStatus").change( function() {
+                    var $awardedDiv = $(".awarded-choice");
+                    var $awaredChoice = $("#{{ admin.uniqId }}_awardedSchoolID");
+                    if( $(this).val() == 2 || $(this).val() == 3 ) {
+                        if( $awaredChoice.val() == '' ) {
+                            var selectedEnrollment = $("#{{ admin.uniqId }}_enrollmentPeriod").val();
+                            var url = Routing.generate( 'ajax_filter_schools_nonstudent' , { _sonata_admin: 'sonata.admin.submissions'  } , true);
+
+                            if ( !xhr || xhr.readyState === 4 ) {
+                                xhr = $.getJSON( url , { enrollment: selectedEnrollment }, function(data) {
+                                    if( data.success ) {
+                                        $awaredChoice.html('<option value=""></option>').append( $.map( data.schools , function(v){ return $('<option>', { val: v.id, text: v.text }); })).select2();
+                                    }
+                                });
+                            }
+                        }
+                        $awaredChoice.select2();
+                        $awardedDiv.removeClass( 'hide' );
+                    } else {
+                        $awardedDiv.addClass( 'hide' );
+                        $awaredChoice.val( '' );
+                        $awaredChoice.select2();
+                    }
+                });
+                $("#{{ admin.uniqId }}_Reason").change( function() {
+                    if( $(this).val() == 'Other' ) {
+                        $('#sonata-ba-field-container-{{ admin.uniqId }}_Other-Reason').show();
+                    } else {
+                        $('#sonata-ba-field-container-{{ admin.uniqId }}_Other-Reason').hide();
+                    }
+                });
+            }
+        {% endif %}
+            jQuery("span[data-total]").each( function() {
+                var $this = jQuery(this);
+                var key = $this.attr('data-total');
+                var $capacity = jQuery('#form_currentEnrollment_' + key + '_maxCapacity');
+                var $black = jQuery('#form_currentEnrollment_' + key + '_black');
+                var $white = jQuery('#form_currentEnrollment_' + key + '_white');
+                var $other = jQuery('#form_currentEnrollment_' + key + '_other');
+                var sum = parseFloat($capacity.val()) - ( parseFloat(parseFloat($black.val()) + parseFloat($white.val()) + parseFloat($other.val())) );
+                $this.text(sum.toFixed(0));
+                jQuery('#form_currentEnrollment_' + key + '_maxCapacity,#form_currentEnrollment_' + key + '_black,#form_currentEnrollment_' + key + '_white,#form_currentEnrollment_' + key + '_other').on('change', function() {
+                    sum = parseFloat( $capacity.val() ) - ( parseFloat( parseFloat( $black.val() ) + parseFloat( $white.val() ) + parseFloat( $other.val() ) ) );
+                    $this.text( sum.toFixed(0) );
+                });
+            });
+            jQuery(".watch-for-change").each(function () {
+                var $this = jQuery(this);
+                var originalValue = $this.attr('data-original-value');
+                $this.on('change', function () {
+                    var value = $this.val();
+                    var $parent = $this.parents('tr');
+                    if( originalValue == value ) {
+                        $parent.removeClass('bg-warning');
+                    } else {
+                        $parent.addClass('bg-warning');
+                    }
+                });
+            });
+
+            var processIntervals = [];
+            var $processList = jQuery('div#process-status ul li.need-updating');
+            if ($processList.length > 0) {
+                var timer = 3000;
+                $processList.each(function () {
+                    var $this = jQuery(this);
+                    processIntervals[$this.attr('data-id')] = setInterval(function () {
+                        ajaxProcessUpdater($this.attr('data-id'), $this);
+                    }, timer);
+                    timer += 500;
+                });
+            }
+            /**
+             * Runs the updater for the proccess-status alert box.
+             * @param id
+             * @param listItem
+             *
+             * @return bool
+             */
+            function ajaxProcessUpdater(id, listItem) {
+                var url = '{{ url('iiab_magnet_program_process_updater' ) }}?id=' + id;
+                jQuery.getJSON(url, function (response) {
+                    if (response.completed == true) {
+                        listItem.html(response.message).addClass('text-success completed').removeClass('need-updating');
+                        clearInterval(processIntervals[listItem.attr('data-id')]);
+                    }
+                });
+            }
+
+            // KEEP ALIVE
+        var user_is_active = false;
+
+        function confirm_user_role(){
+            if( user_is_active ){
+                $.get( '{{ url('ajax_keep_alive' ) }}',
+                    function( data ) {
+                        if( data.role != 'admin'){
+                            window.location.href = "{{ url( 'sonata_admin_dashboard' ) }}";
+                        }
+                        jQuery('#SystemSpecialMessageModal').modal('hide');
+                    }
+                );
+            }
+            user_is_active = false;
+        }
+
+        setInterval( function(){
+
+            if( user_is_active ) {
+                confirm_user_role();
+            } else {
+                jQuery('#SpecialMessageModalTitle').html('Are you still there?');
+                jQuery('#SpecialMessageModalBody').html("It seems you haven't been active in a few minutes.  Please click continue to keep working.");
+
+                jQuery('#SpecialMessageModalCancel').click(function(){
+                    user_is_active = false;
+                });
+                jQuery('#SpecialMessageModalContinue').click(function(){
+                    confirm_user_role();
+                });
+                jQuery('#SystemSpecialMessageModal').modal('show');
+            }
+            user_is_active = false;
+        }, 300000);  //Keep Alive every 5 minutes
+
+        $('body,html').bind('touchstart touchmove scroll mousedown DOMMouseScroll mousewheel keyup',
+            function(){
+                user_is_active = true;
+            }
+        );
+        // END KEEP ALIVE
+        });
+    </script>
+{% endblock %}
+
+{% block logo %}
+    {% spaceless %}
+        <a class="logo" href="{{ path('sonata_admin_dashboard') }}">
+            {% if 'single_image' == sonata_admin.adminPool.getOption('title_mode') or 'both' == sonata_admin.adminPool.getOption('title_mode') %}
+                <img src="{{ asset(sonata_admin.adminPool.titlelogo) }}" alt="{{ sonata_admin.adminPool.title }}">
+            {% endif %}
+        </a>
+    {% endspaceless %}
+{% endblock %}
+
+{% block side_bar_nav %}
+    {% if is_granted( 'IS_AUTHENTICATED_REMEMBERED' ) %}
+        <ul class="sidebar-menu">
+            {% for group in admin_pool.dashboardgroups %}
+                {% set display = (group.roles is empty or is_granted('ROLE_SUPER_ADMIN') ) %}
+                {% for role in group.roles if not display %}
+                    {% set display = is_granted(role) %}
+                {% endfor %}
+
+                {# Do not display the group label if no item in group is available #}
+                {% set item_count = 0 %}
+                {% if display %}
+                    {% for admin in group.items if item_count == 0 %}
+                        {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                            {% set item_count = item_count+1 %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+                {% set active = false %}
+                {% for admin in group.items %}
+                    {% if admin.hasroute('list') and admin.isGranted('LIST') and app.request.get('_sonata_admin') == admin.code %}
+                        {% set active = true %}
+                    {% endif %}
+                {% endfor %}
+                {% if group.label == 'iiab.admin.right.side' and ( app.request.requestUri == path('currentenrollmentsettings_default') or app.request.requestURI == path('emailpdfreport_default') or app.request.requestURI == path('emailpdfreport_awarded2') or app.request.requestUri == path('emailpdfreport_awardedwaitlisted2') or app.request.requestUri == path('emailpdfreport_waitlisted2') or app.request.requestUri == path('emailpdfreport_denied2') or 
+                app.request.requestURI == path('emailformat_accepted2') or 
+                app.request.requestURI == path('emailformat_default') or app.request.requestURI == path('emailformat_confirmation2') or app.request.requestURI == path('emailformat_highschool2') or app.request.requestURI == path('emailformat_placementcompleted2') or app.request.requestURI == path('emailformat_transferpersonnel2') or 
+                app.request.requestURI == path('emailformat_transferschoolchoice2') or 
+                app.request.requestURI == path('emailformat_transfersuccessprep2') or 
+                app.request.requestURI == path('emailformat_transferaccountability2') or 
+                app.request.requestURI == path('emailformat_transfersenior2') or app.request.requestUri == path('process_lottery_select') ) %}
+                    {% set active = true %}
+                {% endif %}
+
+                {% if display and (item_count > 0) %}
+                    <li class="treeview{% if active %} active{% endif %}">
+                        <a href="#">
+                            {% if group.icon|default() %}{{ group.icon|raw }}{% endif %}
+                            <span>{{ group.label|trans({}, group.label_catalogue) }}</span>
+                            <i class="fa pull-right fa-angle-left"></i>
+                        </a>
+
+                        <ul class="treeview-menu{% if active %} active{% endif %}">
+                            {% for admin in group.items %}
+                                {% if admin.hasroute('list') and admin.isGranted('LIST') %}
+                                    {% if admin.label != 'groups' %}
+                                        <li{% if app.request.get('_sonata_admin') == admin.code %} class="active"{% endif %}><a href="{{ admin.generateUrl('list')}}"><i class="fa fa-angle-double-right"></i> {{ admin.label|trans({}, admin.translationdomain) }}</a></li>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if group.label == 'iiab.admin.right.side'
+                                and is_granted('ROLE_SUPER_ADMIN')
+                            %}
+                                <li{% if app.request.requestUri == path('currentenrollmentsettings_default') %} class="active"{% endif %}><a href="{{ url('currentenrollmentsettings_default') }}"><i class="fa fa-angle-double-right"></i> Current Enrollment Settings</a></li>
+                                <li{% if app.request.requestUri == path('process_lottery_select') %} class="active"{% endif %}><a href="{{ url('process_lottery_select') }}"><i class="fa fa-angle-double-right"></i> Process Accountability Act</a></li>
+
+                                <li{% if app.request.requestUri == path('process_late_lottery_select') %} class="active"{% endif %}><a href="{{ url('process_late_lottery_select') }}"><i class="fa fa-angle-double-right"></i> Process Late Accountability Act</a></li>
+
+                                <li{% if app.request.requestUri == path('process_form_select') %} class="active"{% endif %}><a href="{{ url('process_form_select') }}"><i class="fa fa-angle-double-right"></i> Process Bulk Transfers</a></li>
+
+
+                                <li{% if app.request.requestUri == path('lottery_dashboard_select') %} class="active"{% endif %}><a href="{{ url('lottery_dashboard_select') }}"><i class="fa fa-angle-double-right"></i> Dashboard</a></li>
+                                <li{% if app.request.requestUri == path('emailpdfreport_awarded2') %} class="active"{% endif %}><a href="{{ url('emailpdfreport_awarded2') }}"><i class="fa fa-angle-double-right"></i> Awarded Letters/Emails</a></li>
+                                <li{% if app.request.requestUri == path('emailpdfreport_awardedwaitlisted2') %} class="active"{% endif %}><a href="{{ url('emailpdfreport_awardedwaitlisted2') }}"><i class="fa fa-angle-double-right"></i> Awarded & Wait Listed <br />Letters/Emails</a></li>
+                                <li{% if app.request.requestUri == path('emailpdfreport_waitlisted2') %} class="active"{% endif %}><a href="{{ url('emailpdfreport_waitlisted2') }}"><i class="fa fa-angle-double-right"></i> Wait Listed Letters/Emails</a></li>
+                                <li{% if app.request.requestUri == path('emailpdfreport_denied2') %} class="active"{% endif %}><a href="{{ url('emailpdfreport_denied2') }}"><i class="fa fa-angle-double-right"></i> Denied Letters/Emails</a></li>
+
+                                <li{% if app.request.requestUri == path('emailformat_accepted2') %} class="active"{% endif %}><a href="{{ url('emailformat_accepted2') }}"><i class="fa fa-angle-double-right"></i> Accepted Emails</a></li>
+                                <li{% if app.request.requestUri == path('emailformat_confirmation2') %} class="active"{% endif %}><a href="{{ url('emailformat_confirmation2') }}"><i class="fa fa-angle-double-right"></i> Confirmation Emails</a></li>
+                                <li{% if app.request.requestUri == path('emailformat_highschool2') %} class="active"{% endif %}><a href="{{ url('emailformat_highschool2') }}"><i class="fa fa-angle-double-right"></i> Schools Magnet Confirmation Emails</a></li>
+                                <li{% if app.request.requestUri == path('emailformat_placementcompleted2') %} class="active"{% endif %}><a href="{{ url('emailformat_placementcompleted2') }}"><i class="fa fa-angle-double-right"></i> Placement completed Emails</a></li>
+                                
+
+                                <li{% if app.request.requestUri == path('emailformat_transferpersonnel2') %} class="active"{% endif %}><a href="{{ url('emailformat_transferpersonnel2') }}"><i class="fa fa-angle-double-right"></i> Personel School <br>Transfer Confirmation Emails</a></li>
+                                <li{% if app.request.requestUri == path('emailformat_transfersenior2') %} class="active"{% endif %}><a href="{{ url('emailformat_transfersenior2') }}"><i class="fa fa-angle-double-right"></i> Senior School <br>Transfer Confirmation Emails</a></li>
+                                <li{% if app.request.requestUri == path('emailformat_transferschoolchoice2') %} class="active"{% endif %}><a href="{{ url('emailformat_transferschoolchoice2') }}"><i class="fa fa-angle-double-right"></i> School Choice <br>Transfer Confirmation Emails</a></li>
+                                <li{% if app.request.requestUri == path('emailformat_transfersuccessprep2') %} class="active"{% endif %}><a href="{{ url('emailformat_transfersuccessprep2') }}"><i class="fa fa-angle-double-right"></i> Schools Success Prep <br>Application Confirmation Emails</a></li>
+                                <li{% if app.request.requestUri == path('emailformat_transferaccountability2') %} class="active"{% endif %}><a href="{{ url('emailformat_transferaccountability2') }}"><i class="fa fa-angle-double-right"></i> Accountability Schools <br>Transfer Confirmation Emails</a></li>
+                                
+                            {% endif %}
+                        </ul>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock side_bar_nav %}
+
+{% block side_bar_after_nav %}
+    <ul class="sidebar-menu">
+        <li class="treeview">
+            <a href="#"><i class="fa fa-folder"></i>
+                Reports / Exports
+                <i class="fa pull-right fa-angle-left"></i>
+            </a>
+            <ul class="treeview-menu">
+                {# <li><a href="{{ path( 'stw_admin_run_lottery_export' ) }}"><i class="fa fa-angle-double-right"></i>
+                        Export M2M Lottery Info</a>
+                </li>
+                <li><a href="{{ path( 'stw_report-1' ) }}"><i class="fa fa-angle-double-right"></i>
+                        Export M2M Application and Offered Counts</a>
+                </li> #}
+                <li><a href="{{ path( 'transfer-outcome-report' ) }}"><i class="fa fa-angle-double-right"></i>
+                        Outcomes Report</a>
+                </li>
+                {# <li><a href="{{ path( 'remaining-slot-report' ) }}"><i class="fa fa-angle-double-right"></i>
+                        Slots Remaining After M2M Report</a>
+                </li> #}
+                <li><a href="{{ path( 'stw_admin_report_export' ) }}"><i class="fa fa-angle-double-right"></i>
+                        Submission Report</a>
+                </li>
+                <li><a href="{{ path( 'admin_proof_of_residence_by_current_school_report' ) }}"><i class="fa fa-angle-double-right"></i>
+                        Proof of Residence by Current School</a>
+                </li>
+
+                <li><a href="{{ path( 'admin_employee_dependent_report' ) }}"><i class="fa fa-angle-double-right"></i>
+                        Employee Dependent HR Verify</a>
+                </li>
+
+                <li><a href="{{ path( 'stw_admin_report_wait_list_new_submission_export' ) }}"><i class="fa fa-angle-double-right"></i>
+                        Wait List & New Submission Worksheet</a>
+                </li>
+                {# <li><a href="{{ path( 'stw_admin_report_court' ) }}"><i class="fa fa-angle-double-right"></i>
+                        Court Report</a>
+                </li> #}
+                <li><a href="{{ path( 'admin_population_shift_report' ) }}"><i class="fa fa-angle-double-right"></i>
+                        Before and After Population Report</a>
+                </li>
+            </ul>
+        </li>
+        <li class="treeview">
+            <a href="#"><i class="fa fa-folder"></i>
+                Other Functions
+                <i class="fa pull-right fa-angle-left"></i>
+            </a>
+            <ul class="treeview-menu">
+                <li><a href="{{ path( 'stw_admin_import' ) }}"><i class="fa fa-angle-double-right"></i>
+                        Import Data</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+<!-- Special Message -->
+        <div id="SystemSpecialMessageModal" class="modal fade" role="dialog" data-backdrop="static" >
+            <div class="modal-dialog" role="document">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="SpecialMessageModalTitle"></h4>
+                    </div>
+                    <div class="modal-body" id="SpecialMessageModalBody">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-warning" id="SpecialMessageModalCancel">Cancel</button>
+                        <button type="button" class="btn btn-success" id="SpecialMessageModalContinue">Continue</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <!-- Report Issue/Bug Modal -->
+        <div id="UserFeedbackModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Provide Feedback</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="UserFeedback">
+
+                            <div class="row priority" style="margin-bottom: 20px;">
+                                <div class="col-xs-12 text-left" >
+                                    <label>Feedback Type</label>
+                                </div>
+                                <div class="col-xs-12 col-md-4 feedback">
+                                    <label style="padding: 6px;">
+                                        <input type="radio" name="feedback_priority" value="4"> Feedback
+                                    </label>
+                                </div>
+                                <div class="col-xs-12 col-md-4 feature">
+                                    <label style="padding: 6px;">
+                                        <input type="radio" name="feedback_priority" value="5"> Feature Request
+                                    </label>
+                                </div>
+                                <div class="col-xs-12 col-md-4 bug">
+                                    <label style="padding: 6px;">
+                                        <input type="radio" name="feedback_priority" value="3"> Bug/Error
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="row submission" style="margin-bottom: 20px;">
+                                <div class="col-xs-12 text-left">
+                                    <label for="feedback_submission">Submission ID Affected </label><br>
+                                    <input type="text" name="feedback_submission" style="width: 100%;"></inputtextarea>
+                                </div>
+                            </div>
+
+                            <div class="row task" style="margin-bottom: 20px;">
+                                <div class="col-xs-12 text-left">
+                                    <label for="feedback_task">Task you were performing when error occurred </label><br>
+                                    <textarea name="feedback_task" style="width: 100%;"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="row description">
+                                <div class="col-xs-12 text-left">
+                                    <label for="feedback_description">Detailed Description </label><br>
+                                    <textarea name="feedback_description" style="width: 100%;"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-warning" id="SubmitFeedback">Submit Feedback</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+{% endblock %}

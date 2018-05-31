@@ -1,0 +1,14 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    {%  if object.settingName == 'Failing and Former Failing Schools'
+        or object.settingName == 'Schools Accepting Acountability Act Transfers'
+        or object.settingName == 'School Choice Schools'
+        or object.settingName == 'Success Prep Schools'
+        or 'Work Site -' in object.settingName
+    %}
+        Edit to see List of Schools
+    {% else %}
+        {{ object.settingValue }}
+    {% endif %}
+{% endblock %}

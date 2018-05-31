@@ -1,0 +1,171 @@
+{% extends '@IIABStudentTransfer/standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .tab-content .box {
+            padding:20px;
+        }
+        .nav-tabs-custom {
+            margin-bottom:0;
+        }
+        .tab-content .custom-box {
+            border-top:0;
+            border-radius: 0 0 3px 3px;
+        }
+        .date  select{
+            width:80px;
+        }
+        .tab-content .btn {
+            margin:15px 0;
+        }
+        #deniedSettingsWarning {
+            text-align:center;
+            margin:20px 20%;
+            padding:12px;
+            width:auto;
+            z-index:100000;
+            display:none;
+            border-radius:4px;
+            border:1px solid #E1CDCD;
+        }
+    </style>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        function checkFields( ) {
+            var academics = document.getElementById( 'form_nextAcademicYear' ).value;
+            var transfers = document.getElementById( 'form_nextTransferYear' ).value;
+            var warning = document.getElementById( 'deniedSettingsWarning');
+            if ( ( academics == '' ) || ( transfers == '' ) ) {
+                warning.style.display = 'block';
+            } else {
+                warning.style.display = 'none';
+            }
+        }
+    </script>
+{% endblock %}
+{% block sonata_page_content_header %}
+    <h2>Denied Emails/Letters</h2>
+    {{ render( controller('IIABStudentTransferBundle:Lottery:processingStatus') ) }}
+{% endblock %}
+{% block content %}
+    {{ form_start(form) }}
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+                <a id="deniedSettingsTab" href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a>
+            </li>
+            <li role="presentation">
+                <a id="deniedLetterTab" href="#letter" aria-controls="letter" role="tab" data-toggle="tab" onclick="checkFields();">Letters</a>
+            </li>
+            <li role="presentation">
+                <a id="deniedEmailTab" href="#email" aria-controls="email" role="tab" data-toggle="tab" onclick="checkFields();">Emails</a>
+            </li>
+        </ul>
+        <div class="col-md-12 bg-warning" id="deniedSettingsWarning">
+            {{ 'emailpdf.settingsWarning'|trans( {} , 'IIABStudentTransferBundle' ) }}
+        </div>
+    </div>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="settings">
+            <div class="box custom-box">
+                <div class="col-md-6">
+                    {{ form_label( form.nextAcademicYear ) }}
+                    {{ form_widget( form.nextAcademicYear , { 'attr' : { 'class' : 'form-control' } } ) }}
+                </div>
+                <div class="col-md-6">
+                    {{ form_label( form.nextTransferYear )}}
+                    {{ form_widget( form.nextTransferYear , { 'attr' : { 'class' : 'form-control' } } ) }}
+                </div>
+                <br style="clear:both;" />
+                <div class="col-md-6" style="margin-top:20px;">
+                    {{ form_row(form.nextMailDate , { 'attr' : { 'class' : 'date' } } ) }}
+                </div>
+                <div class="col-md-6" style="margin-top:20px;">
+                    {{ form_widget(form.saveChanges1, { 'attr' : { 'class' : 'btn btn-primary' } } ) }}
+                </div>
+
+                <br style="clear:left" />
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="letter">
+            <div class="box custom-box">
+
+                <div class="col-md-12">
+                    {{  form_label(  form.letterTemplate ) }}
+                    {{  form_widget( form.letterTemplate ) }}
+                </div>
+
+                <div class="col-md-12">
+                    {{ form_widget( form.saveLetterChanges ) }}
+                </div>
+
+                <div class="col-md-12" style="margin-top:20px;">
+                    {{ form_label( form.submissionStatus_letter ) }}
+                    {{ form_widget( form.submissionStatus_letter , { 'attr' : { 'class' : 'form-control' } } ) }}
+                </div>
+
+                <div class="col-md-12" style="margin-top:20px;">
+                    {{ form_label( form.selectForm_letter ) }}
+                    {{ form_widget( form.selectForm_letter , { 'attr' : { 'class' : 'form-control' } } ) }}
+                </div>
+
+                <div class="col-md-12" >
+                    {{ form_widget(form.sendPDFs, { 'attr' : { 'class' : 'btn btn-primary' } } ) }}
+                    <p>{{ 'emailpdf.pdfNotice' | trans( {} , 'IIABStudentTransferBundle' ) }}</p>
+                    <h3>{{ 'emailpdf.lastGeneratedPDFs' | trans( {} , 'IIABStudentTransferBundle' ) }}</h3>
+                    {% if files is defined and files is not empty %}
+                        <ul>
+                            {% for location in files %}
+                                <li><a target="_blank" href="{{ asset( "reports/" ~ info.type ~ "/" ~ info.period ~ "/" ~ location ) }}">{{ location }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>No files have been generated yet.</p>
+                    {% endif %}
+                </div>
+                <br style="clear:left" />
+            </div>
+            <p>{{ 'emailpdf.acceptanceDateTimeNotice' | trans( {} , 'IIABStudentTransferBundle' ) }}</p>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="email">
+            <div class="box custom-box">
+
+                <div class="row">
+                    <div class="col-md-12 form-group">
+                        {{  form_label(  form.emailSubject ) }}
+                        {{  form_widget( form.emailSubject ) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 form-group">
+                        {{  form_label(  form.emailBodyHtml ) }}
+                        {{  form_widget( form.emailBodyHtml ) }}
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    {{ form_widget( form.saveEmailChanges ) }}
+                </div>
+
+                <div class="col-md-12" style="margin-top:20px;">
+                    {{ form_label( form.submissionStatus_email ) }}
+                    {{ form_widget( form.submissionStatus_email , { 'attr' : { 'class' : 'form-control' } } ) }}
+                </div>
+
+                <div class="col-md-12" style="margin-top:20px;">
+                    {{ form_label( form.selectForm_email ) }}
+                    {{ form_widget( form.selectForm_email , { 'attr' : { 'class' : 'form-control' } } ) }}
+                </div>
+
+                <div class="col-md-12">
+                    {{ form_widget(form.sendEmailsNow, { 'attr' : { 'class' : 'btn btn-primary' } } ) }}
+                </div>
+                <br style="clear:left" />
+            </div>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

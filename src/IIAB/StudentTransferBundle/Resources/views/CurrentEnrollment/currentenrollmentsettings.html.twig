@@ -1,0 +1,62 @@
+{% extends '@IIABStudentTransfer/standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        form , .alert { margin: 0 35px; }
+        .btn-default {  margin-left:20px; margin-right: 10px; }
+        .alert { margin-bottom: 20px; }
+    </style>
+{% endblock %}
+{% block sonata_page_content_header %}
+    <h2>{{ openEnrollment }} - {{ 'current_enrollment.header'|trans( {} , 'IIABStudentTransferBundle' ) }}</h2>
+    {{ render( controller('IIABStudentTransferBundle:Lottery:processingStatus') ) }}
+{% endblock %}
+{% block content %}
+    {% if update_successful == true %}
+        <div class="alert alert-success"> {{ 'current_enrollment.update_successful'|trans( {} , 'IIABStudentTransferBundle' ) }}</div>
+    {% endif %}
+    {{ form_start(form) }}
+        <div class="box box-primary">
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>{{ 'current_enrollment.schoolname'|trans( {} , 'IIABStudentTransferBundle' ) }}</th>
+                        <th width="12%">Max Capacity</th>
+                        <th width="11%">{{ 'current_enrollment.black'|trans( {} , 'IIABStudentTransferBundle' ) }}</th>
+                        <th width="11%">{{ 'current_enrollment.other'|trans( {} , 'IIABStudentTransferBundle' ) }}</th>
+                        <th width="11%">{{ 'current_enrollment.white'|trans( {} , 'IIABStudentTransferBundle' ) }}</th>
+                        <th width="11%">Available Slots</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>{{ 'current_enrollment.schoolname'|trans( {} , 'IIABStudentTransferBundle' ) }}</th>
+                        <th width="12%">Max Capacity</th>
+                        <th width="11%">{{ 'current_enrollment.black'|trans( {} , 'IIABStudentTransferBundle' ) }}</th>
+                        <th width="11%">{{ 'current_enrollment.other'|trans( {} , 'IIABStudentTransferBundle' ) }}</th>
+                        <th width="11%">{{ 'current_enrollment.white'|trans( {} , 'IIABStudentTransferBundle' ) }}</th>
+                        <th width="11%">Available Slots</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    {% if form.currentEnrollment is defined and form.currentEnrollment is not empty %}
+                        {% for key,groupKey in form.currentEnrollment %}
+                            <tr>
+                                <td><label>{{ groupKey.vars.value.groupId.name }}</label></td>
+                                <td>{{ form_widget( groupKey.maxCapacity , { 'attr' : { 'class' : 'form-control watch-for-change', 'data-original-value': groupKey.maxCapacity.vars.value } } ) }}</td>
+                                <td>{{ form_widget( groupKey.black , { 'attr' : { 'class' : 'form-control watch-for-change', 'data-original-value': groupKey.black.vars.value } } ) }}</td>
+                                <td>{{ form_widget( groupKey.other , { 'attr' : { 'class' : 'form-control watch-for-change', 'data-original-value': groupKey.other.vars.value } } ) }}</td>
+                                <td>{{ form_widget( groupKey.white , { 'attr' : { 'class' : 'form-control watch-for-change', 'data-original-value': groupKey.white.vars.value } } ) }}</td>
+                                <td class="text-right"><span data-total="{{ key }}" class="total_{{ key }}"></span></td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                </tbody>
+            </table>
+            <p class="text-right"> {{ form_widget( form.saveCurrentEnrollment , { 'attr' : { 'class' : 'btn btn-primary' } } ) }}
+            </p>
+            <div class="clear clearfix"></div>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

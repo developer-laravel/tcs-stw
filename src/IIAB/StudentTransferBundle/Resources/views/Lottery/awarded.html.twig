@@ -1,0 +1,60 @@
+{% extends '@IIABStudentTransfer/layout.html.twig' %}
+
+{% block title %}{{ 'awarded.title'|trans( { '%form%': submission.formID } , 'IIABStudentTransferBundle') }}{% endblock %}
+
+{% block pageTitle %}<h1>{{ 'awarded.header'|trans( { '%form%': submission.formID } , 'IIABStudentTransferBundle') }}</h1>{% endblock %}
+
+{% block body %}
+
+
+    {{ form_start( form , { 'attr': { 'autocomplete': 'off' } } ) }}
+    {{ form_errors( form ) }}
+
+    {% if nonFormFields is defined %}
+        {{ include( 'IIABStudentTransferBundle:Default:textFields.html.twig' , { 'textFields': nonFormFields } ) }}
+    {% endif %}
+
+    {% if form.choice1 is defined %}
+        <div class="notice button button-rounded button-block">{{ 'popup.schoolChoice.body'|trans( {} , 'IIABStudentTransferBundle' )|escape }}</div>
+
+    {% endif %}
+
+    {% if form.hidden_input is not defined %}
+        {% if submission.submissionStatus.id == 11 %}
+            <p>{{ 'awarded.waitListNote'|trans( {} , 'IIABStudentTransferBundle' ) }}</p>
+        {% else %}
+            <p>{{ 'awarded.note'|trans( {} , 'IIABStudentTransferBundle' ) }}</p>
+        {% endif %}
+    {% endif %}
+
+    {% if form.decline is defined %}
+        <div class="decline">
+            {{ form_label(form.decline) }}
+            {{ form_widget(form.decline) }}
+        </div>
+    {% endif %}
+
+    {% if form.accept is defined %}
+        <div class="accept">
+            {{ form_label(form.accept) }}
+            {{ form_widget(form.accept) }}
+        </div>
+    {% endif %}
+
+    {% if form.decline_both is defined %}
+        <div class="clear clearfix"></div>
+        <p style="text-align: center;">{{ 'awarded.decline_bothNote'|trans( {} , 'IIABStudentTransferBundle' ) }}</p>
+        <div style="text-align: center;">
+            {{ form_label(form.decline_both) }}
+            {{ form_widget(form.decline_both) }}
+        </div>
+    {% endif %}
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block disclaimer %}
+    <p>{{ ( 'awarded.footer.disclaimer')|trans( {} , 'IIABStudentTransferBundle' ) }}</p>
+{% endblock %}
+

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta name="version" content="2.17.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+        {%- if block('title') -%}
+            {{ block('title') }} | {{ 'base.title'|trans( {} , 'IIABStudentTransferBundle' ) }}
+        {%- else -%}
+            {{ 'base.title'|trans( {} , 'IIABStudentTransferBundle' ) }}
+        {%- endif-%}
+    </title>
+    <meta name="description" content="{{ 'base.description'|trans( {} , 'IIABStudentTransferBundle' ) }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block meta %}{% endblock %}
+
+    {% block stylesheets %}
+        <style>
+            form div ul , form ul {
+                margin:0 !important;
+                padding:5px 0 0 0 !important;
+                font-size:10px;
+                color:#F00;
+                float:right;
+            }
+            /* Adds asterisks after each required form field */
+            .required:after {
+                color:#FF0000;
+                content: " *";
+            }
+        </style>
+    {% endblock %}
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <script src="{{ asset( 'js/vendor/modernizr-2.6.2.min.js' ) }}"></script>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+</head>
+<body>
+<header>
+    <div class="header"></div>
+</header>
+<div class="container">
+    <!--[if lt IE 7]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <div class="translations">
+        <ul>
+            <li><a href="{{ path("stw_index", {"_locale": "en"}) }}">English</a></li>
+            <li><a href="{{ path("stw_index", {"_locale": "es"}) }}">Español</a></li>
+        </ul>
+    </div>
+    {% block pageTitle %}{% endblock %}
+
+    {% if app.session.flashBag.has('success') %}
+        <div class="alert-message success button button-block button-rounded">
+            {% for msg in app.session.flashBag.get('success') %}
+                <p>{{ msg }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if app.session.flashBag.has('notice') %}
+        <div class="alert-message notice button button-block button-rounded">
+            {% for msg in app.session.flashBag.get('notice') %}
+                <p>{{ msg }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if app.session.flashBag.has('error') %}
+        <div class="alert-message error button button-block button-rounded">
+            {% for msg in app.session.flashBag.get('error') %}
+               <p>{{ msg|raw }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Add your site or application content here -->
+    {% block body %}{% endblock %}
+</div>
+
+<footer>
+    <div class="footer">
+        {{ render(
+            controller(
+                'IIABStudentTransferBundle:Default:footer'
+            )
+        ) }}
+        {% block disclaimer %}{% endblock %}
+    </div>
+</footer>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="{{ asset( 'js/vendor/jquery-1.10.2.min.js ' ) }}"><\/script>')</script>
+<script>
+    var form = $('form');
+    form.on('focus', 'input[type=number]', function (e) {
+        $(this).on('mousewheel.disablescroll', function (e) {
+            e.preventDefault();
+        })
+    });
+    form.on('blur', 'input[type=number]', function (e) {
+        $(this).off('mousewheel.disablescroll')
+    });
+    form.on('blur', '#form_choice1', function (e) {
+        var selected = $(this).find('option:selected').val();
+        jQuery('#form_choice2 option').removeAttr('disabled');
+        if( selected != '' ) {
+            jQuery('#form_choice2 option[value="' + selected + '"]').attr('disabled', 'disabled');
+        }
+    });
+    form.on('blur', '#form_choice2', function (e) {
+        var selected = $(this).find('option:selected').val();
+        jQuery('#form_choice1 option').removeAttr('disabled');
+        if( selected != '' ) {
+            jQuery('#form_choice1 option[value="' + selected + '"]').attr('disabled', 'disabled');
+        }
+    });
+</script>
+{% block javascripts %}{% endblock %}
+</body>
+</html>

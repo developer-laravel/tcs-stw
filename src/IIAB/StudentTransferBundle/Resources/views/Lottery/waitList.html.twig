@@ -1,0 +1,15 @@
+{% extends '@IIABStudentTransfer/layout.html.twig' %}
+
+{% block title %}{{ 'waitListed.title'|trans( {} , 'IIABStudentTransferBundle') }}{% endblock %}
+
+{% block pageTitle %}<h1>{{ 'waitListed.header'|trans( {} , 'IIABStudentTransferBundle') }}</h1>{% endblock %}
+
+{% block body %}
+
+    <p>{{ 'waitListed.message'|trans( {} , 'IIABStudentTransferBundle')|raw }}</p>
+    <p>{{ 'awarded.waitList'|trans( {} , 'IIABStudentTransferBundle')|raw }}: {{ waitList }}</p>
+    <p>{{ 'waitListed.help'|trans( {} , 'IIABStudentTransferBundle') }}</p>
+    <p><a href="{{ url( 'stw_index' ) }}" class="button button-rounded">{{ 'forms.finish'|trans( {} , 'IIABStudentTransferBundle' ) }}</a></p>
+
+{% endblock %}
+

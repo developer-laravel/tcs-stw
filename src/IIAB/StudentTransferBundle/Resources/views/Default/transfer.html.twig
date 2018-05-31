@@ -1,0 +1,16 @@
+{% extends '@IIABStudentTransfer/layout.html.twig' %}
+
+{% block title %}{{ 'transfer.title'|trans( {} , 'IIABStudentTransferBundle') }}{% endblock %}
+
+{% block pageTitle %}<h1>{{ 'transfer.header'|trans( {} , 'IIABStudentTransferBundle') }}</h1>{% endblock %}
+
+{% block body %}
+
+    {% if confirmation is defined %}
+        <div class="success button button-block button-rounded button-caution">{{ 'transfer.confirmation'|trans( { '%confirmation%': confirmation } , 'IIABStudentTransferBundle') }}<br /><span>{{ confirmation }}</span></div>
+        <p>{{ 'transfer.message'|trans( { '%confirmation%': confirmation } , 'IIABStudentTransferBundle')|raw }}</p>
+        <p>{{ 'transfer.help'|trans( { '%confirmation%': confirmation } , 'IIABStudentTransferBundle') }}</p>
+        <p><a href="{{ url( 'stw_index' ) }}" class="button button-rounded">{{ 'forms.finish'|trans( {} , 'IIABStudentTransferBundle' ) }}</a></p>
+    {% endif %}
+{% endblock %}
+

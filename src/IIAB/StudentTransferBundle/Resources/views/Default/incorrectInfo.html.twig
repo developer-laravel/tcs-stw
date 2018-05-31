@@ -1,0 +1,15 @@
+{% extends '@IIABStudentTransfer/layout.html.twig' %}
+
+{% block title %}{{ 'errors.incorrectInfo.title'|trans( {} , 'IIABStudentTransferBundle') }}{% endblock %}
+
+{% block pageTitle %}<h1>{{ 'errors.incorrectInfo.title'|trans( {} , 'IIABStudentTransferBundle') }}</h1>{% endblock %}
+
+{% block body %}
+    {% if lessThan72Hours == 'yes' %}
+        <div class="notice button button-block button-rounded">{{ 'errors.incorrectInfo.messagePart1within72Hours'|trans( {} , 'IIABStudentTransferBundle') }}</div>
+    {% else %}
+        <div class="notice button button-block button-rounded">{{ 'errors.incorrectInfo.messagePart1'|trans( {} , 'IIABStudentTransferBundle') }}</div>
+    {% endif %}
+    <p>{{ 'errors.incorrectInfo.messagePart2'|trans( {} , 'IIABStudentTransferBundle') }}</p>
+    <p><a href="{{ url( 'stw_index' ) }}" class="button button-rounded">{{ 'forms.finish'|trans( {} , 'IIABStudentTransferBundle' ) }}</a></p>
+{% endblock %}

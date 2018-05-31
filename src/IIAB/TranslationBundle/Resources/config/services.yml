@@ -1,0 +1,30 @@
+services:
+    translation.extension.loader:
+        class: Twig_Extension_StringLoader
+        tags:
+            - { name: 'twig.extension' }
+    translation.loader.db:
+        class: IIAB\TranslationBundle\Loader\DatabaseLoader
+        arguments: ["@doctrine.orm.default_entity_manager"]
+        tags:
+            - { name: translation.loader , alias: db }
+    translation.admin.languagetoken:
+        class: IIAB\TranslationBundle\Admin\LanguageTokenAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "iiab.admin.translations", label: "Translations" }
+        arguments:
+            - ~
+            - IIAB\TranslationBundle\Entity\LanguageToken
+            - ~
+        calls:
+            - [ setTranslationDomain, [IIABTranslationBundle] ]
+    translation.admin.languagetranslation:
+        class: IIAB\TranslationBundle\Admin\LanguageTranslationAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "iiab.admin.translations", label: "", show_in_dashboard: false }
+        arguments:
+            - ~
+            - IIAB\TranslationBundle\Entity\LanguageTranslation
+            - ~
+        calls:
+            - [ setTranslationDomain, [IIABStudentTransferBundle]]

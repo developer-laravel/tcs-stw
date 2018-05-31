@@ -1,0 +1,65 @@
+{% macro render_groups(admin, form, groups, has_tab) %}
+    {% if has_tab %}<div class="row">{% endif %}
+    {% for code in groups %}
+        {% set form_group = admin.formgroups[code] %}
+        <div class="{{ form_group.class }}"> {# default class 'col-md-12' removed because it do not work with tabs#}
+            <div class="box box-success">
+                <div class="box-header">
+                    <h4 class="box-title">
+                        {{ admin.trans(form_group.name, {}, form_group.translation_domain) }}
+                    </h4>
+                </div>
+                {#<div class="box{% if loop.first %} in{% endif %}" id="{{ admin.uniqid }}_{{ loop.index }}">#}
+                <div class="box-body">
+                    <div class="sonata-ba-collapsed-fields">
+                        {% if form_group.description != false %}
+                            <p>{{ form_group.description|raw }}</p>
+                        {% endif %}
+
+                        {% for field_name in form_group.fields %}
+                            {% if admin.formfielddescriptions[field_name] is defined %}
+                                {% if form.vars.value.submissionstatus is defined %}
+                                    {% if form.vars.value.submissionstatus.id == 1 or ( form.vars.value.submissionstatus.id == 9 and form.vars.value.waitList|length > 0 ) %}
+                                        {% if field_name == 'offeredCreation' or field_name == 'offeredCreationEndOnlineTime' or field_name == 'offeredCreationEndOfflineTime' %}
+                                            <div class="{{ admin.uniqId }}_changing-to-offered hide form-group">
+                                            {% if field_name == 'offeredCreation' %}
+                                                <p style="padding: 10px;" class="bg-warning"><strong>Important:</strong> Changing the Submission Status to "Offered", will send an Awarded Email to the Parent's Email Address (if one exists). This email will be sent upon pressing the "Update" button.</p>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                                {{ form_row(form[field_name])}}
+                                {% if form.vars.value.submissionstatus is defined %}
+                                    {% if form.vars.value.submissionstatus.id == 1 or ( form.vars.value.submissionstatus.id == 9 and form.vars.value.waitList|length > 0 ) %}
+                                        {% if field_name == 'offeredCreation' or field_name == 'offeredCreationEndOnlineTime' or field_name == 'offeredCreationEndOfflineTime' %}
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        {% else %}
+                            <em>{{ 'message_form_group_empty'|trans({}, 'SonataAdminBundle') }}</em>
+                        {% endfor %}
+                    </div>
+
+                    {% if form_group.name == 'Submission Status' %}
+                        {#Display the Wait Listed Schools.#}
+                        {% if form.vars.value.submissionstatus is defined %}
+                            {% if form.vars.value.submissionstatus.id == 9 and form.vars.value.waitList|length > 0 %}
+                                <div class="sonata-ba-collasped-fields">
+                                    <ul class="list-unstyled">
+                                        {% for waitList in form.vars.value.waitList %}
+                                            <li><strong>Wait List Choice {{ loop.index }}</strong>: {{ waitList.choiceSchool }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                </div>
+                {#</div>#}
+            </div>
+        </div>
+    {% endfor %}
+    {% if has_tab %}</div>{% endif %}
+{% endmacro %}

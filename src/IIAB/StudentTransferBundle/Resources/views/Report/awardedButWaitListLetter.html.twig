@@ -1,0 +1,45 @@
+{{ include('@IIABStudentTransfer/Report/header.html.twig') }}
+
+<div class="push">
+    <p>Guardian of {{ submission.firstName }} {{ submission.lastName }}<br />
+        {{ submission.address }}<br />
+        {{ submission.city }}, AL {{ submission.zip }}</p>
+
+    <p>RE: Majority-to-Minority Transfer Status for Confirmation Number: {{ submission.confirmationNumber }}</p>
+
+    <p>Your application for a Majority-to-Minority Student Transfer for {{ submission.firstName }} {{ submission.lastName }} for {{ submission.enrollmentPeriod }} has been approved for the following two choices:</p>
+
+    <div>
+        <p>Your student can be Wait Listed for his/her first choice: <strong>{{ waitListedSchool.formattedString }}</strong>. Should additional spaces become available at <strong>{{ waitListedSchool.formattedString }}</strong>, those spaces will be filled by students on the Wait List based on each student’s lottery number.  If spaces become available at <strong>{{ waitListedSchool.formattedString }}</strong> and your student is selected for a space based on his/her lottery number, our office will contact you and award your student a space at this school. Please note that the Wait List expires on July 15, {{ submission.enrollmentPeriod.afterLotteryEndingDate|date("Y") }}.</p>
+
+        <p>Your student has been accepted for placement at his/her second choice: <strong>{{ submission.awardedSchoolID.formattedString }}</strong></p>
+    </div>
+
+    <p><strong>You may only choose one of the above options.</strong></p>
+
+    <p><strong>You have two choices for accepting or declining one of the options above:</strong></p>
+    <div>
+        <p>You may go online at <strong>{{ url( 'stw_lottery_accept' , { uniqueID: submission.url } ) }}</strong> to accept or decline your option.</p>
+        <p>You may call the TCS Attendance Office at 205-759-3700, Monday-Friday between 8:30am and 4:00pm, for instructions regarding accepting or declining by phone.</p>
+    </div>
+
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="6" style="table-layout:fixed; margin-bottom: 10px;">
+        <tbody>
+        <tr>
+            <td width="40%" style="font-weight:bold;"><strong>Deadline to Accept or Decline:</strong></td>
+            <td width="60%" style="font-weight:bold;" align="center"><strong>{{ acceptOnlineDate }}; {{ acceptOnlineTime }} online<br />OR<br />{{ acceptOfflineDate }}; {{ acceptOfflineTime }} by phone</strong></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="6" style="table-layout:fixed; border:1px solid #000000; margin-bottom: 10px;">
+        <tbody>
+        <tr>
+            <td style="font-weight:bold;"><strong>IMPORTANT: If you do not accept or decline online or by phone by {{ acceptOnlineDate }}, your transfer and wait list options will automatically be declined; your student will not be allowed to transfer; and must attend the school for which they are zoned.</strong></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+{{ include('@IIABStudentTransfer/Report/footer.html.twig') }}

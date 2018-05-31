@@ -1,0 +1,12 @@
+{% extends '@IIABStudentTransfer/layout.html.twig' %}
+
+{% block title %}{{ 'admin.title'|trans( {} , 'IIABStudentTransferBundle') }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'admin.header'|trans( {} , 'IIABStudentTransferBundle') }}</h1>
+    {% if is_granted( 'IS_AUTHENTICATED_REMEMBERED' ) %}
+        <a title="{{ 'base.logout'|trans( {} , 'IIABStudentTransferBundle' )|escape( 'html_attr' ) }}" href="{{ url( 'fos_user_security_logout' ) }}">{{ 'base.logout'|trans( {} , 'IIABStudentTransferBundle' ) }} {{ app.user.username }}</a>
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}

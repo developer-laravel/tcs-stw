@@ -1,0 +1,15 @@
+{{ include('@IIABStudentTransfer/Report/header.html.twig') }}
+
+<div class="push">
+    <p>Guardian of {{ submission.firstName }} {{ submission.lastName }}<br />
+        {{ submission.address }}<br />
+        {{ submission.city }}, AL {{ submission.zip }}</p>
+
+    <p>RE: {{ submission.formID }} Status for Confirmation Number: {{ submission }}</p>
+
+    <p>Unfortunately, your application for a {{ submission.formID }} for {{ submission.firstName }} {{ submission.lastName }} for {{ enrollment }} was not awarded {{ submissionStatus }} at the school(s) you requested.  Your student must remain at their zoned school for {{ enrollment }}.</p>
+
+    <p>Please note, Majority-to-Minority Student Transfer requests will be accepted for the {{ nextSchoolsYear }} school year from {{ nextYear }} and other transfer requests will be accepted after Majority-to-Minority transfer requests are processed.</p>
+
+</div>
+{{ include('@IIABStudentTransfer/Report/footer.html.twig') }}

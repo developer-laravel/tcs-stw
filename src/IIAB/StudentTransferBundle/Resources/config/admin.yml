@@ -1,0 +1,132 @@
+services:
+    sonata.admin.user:
+        class: IIAB\StudentTransferBundle\Admin\UserAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "iiab.admin.users", label: "Users" }
+        arguments:
+            - ~
+            - IIAB\StudentTransferBundle\Entity\User
+            - ~
+        calls:
+            - [ setTranslationDomain, [IIABStudentTransferBundle]]
+    sonata.admin.openenrollment:
+        class: IIAB\StudentTransferBundle\Admin\OpenEnrollmentAdmin
+        tags:
+            - { name: sonata.admin , manager_type: orm, group: "iiab.admin.left.side", label: "Open Enrollments" }
+        arguments:
+            - ~
+            - IIAB\StudentTransferBundle\Entity\OpenEnrollment
+            - ~
+        calls:
+            - [ setTranslationDomain, [IIABStudentTransferBundle]]
+    sonata.admin.form:
+        class: IIAB\StudentTransferBundle\Admin\FormAdmin
+        tags:
+            - { name: sonata.admin , manager_type: orm, group: "iiab.admin.left.side", label: "Form Types" }
+        arguments:
+            - ~
+            - IIAB\StudentTransferBundle\Entity\Form
+            - ~
+        calls:
+            - [ setTranslationDomain, [IIABStudentTransferBundle]]
+    sonata.admin.settings:
+        class: IIAB\StudentTransferBundle\Admin\SettingsAdmin
+        tags:
+            - { name: sonata.admin , manager_type: orm, group: "iiab.admin.left.side", label: "Settings" }
+        arguments:
+            - ~
+            - IIAB\StudentTransferBundle\Entity\Settings
+            - ~
+        calls:
+            - [ setTranslationDomain, [IIABStudentTransferBundle]]
+    sonata.admin.openenrollment.hasform:
+        class: IIAB\StudentTransferBundle\Admin\OpenEnrollmentHasFormAdmin
+        tags:
+            - { name: sonata.admin , manager_type: orm, group: "", label: "Open Enrollments Forms" }
+        arguments:
+            - ~
+            - IIAB\StudentTransferBundle\Entity\OpenEnrollmentHasForm
+            - ~
+        calls:
+            - [ setTranslationDomain, [IIABStudentTransferBundle]]
+    sonata.admin.lottery:
+        class: IIAB\StudentTransferBundle\Admin\LotteryAdmin
+        tags:
+            - { name: sonata.admin , manager_type: orm, group: "iiab.admin.left.side", label: "Accountability Act Process Settings" }
+        arguments:
+            - ~
+            - IIAB\StudentTransferBundle\Entity\Lottery
+            - 'IIABStudentTransferBundle:LotteryCRUD'
+        calls:
+            - [ setTranslationDomain, [IIABStudentTransferBundle]]
+
+    sonata.admin.specialenrollment:
+         class: IIAB\StudentTransferBundle\Admin\SpecialEnrollmentAdmin
+         tags:
+             - { name: sonata.admin , manager_type: orm, group: "none.iiab.admin.left.side", label: "Personnel/SPED Enrollments" }
+         arguments:
+             - ~
+             - IIAB\StudentTransferBundle\Entity\SpecialEnrollment
+             - ~
+         calls:
+             - [ setTranslationDomain, [IIABStudentTransferBundle]]
+    sonata.admin.submissions:
+        class: IIAB\StudentTransferBundle\Admin\SubmissionAdmin
+        tags:
+            - { name: sonata.admin , manager_type: orm, group: "iiab.admin.right.side", label: "Submissions" }
+        arguments:
+            - ~
+            - IIAB\StudentTransferBundle\Entity\Submission
+            - 'IIABStudentTransferBundle:SubmissionCRUD'
+        calls:
+            - [ setTranslationDomain, [IIABStudentTransferBundle]]
+    sonata.admin.audit:
+        class: IIAB\StudentTransferBundle\Admin\AuditAdmin
+        tags:
+            - { name: sonata.admin , manager_type: orm, group: "iiab.admin.right.side", label: "Audit Tracking", position: "right" }
+        arguments:
+            - ~
+            - IIAB\StudentTransferBundle\Entity\Audit
+            - ~
+        calls:
+            - [ setTranslationDomain, [IIABStudentTransferBundle]]
+    # sonata.admin.adm:
+    #     class: IIAB\StudentTransferBundle\Admin\ADMAdmin
+    #     tags:
+    #         - { name: sonata.admin , manager_type: orm, group: "iiab.admin.right.side", label: "Racial Composition Data" }
+    #     arguments:
+    #         - ~
+    #         - IIAB\StudentTransferBundle\Entity\ADM
+    #         - ~
+    #     calls:
+    #         - [ setTranslationDomain, [IIABStudentTransferBundle]]
+    # sonata.admin.newschool:
+    #     class: IIAB\StudentTransferBundle\Admin\NewSchoolAdmin
+    #     tags:
+    #         - { name: sonata.admin , manager_type: orm, group: "iiab.admin.right.side", label: "New School Data" }
+    #     arguments:
+    #         - ~
+    #         - IIAB\StudentTransferBundle\Entity\NewSchool
+    #         - ~
+    #     calls:
+    #         - [ setTranslationDomain, [IIABStudentTransferBundle]]
+    #sonata.admin.slotting:
+    #    class: IIAB\StudentTransferBundle\Admin\SlottingAdmin
+    #    tags:
+    #        - { name: sonata.admin , manager_type: orm, group: "iiab.admin.right.side", label: "Slotting List" }
+    #    arguments:
+    #        - ~
+    #        - IIAB\StudentTransferBundle\Entity\Slotting
+    #        - ~
+    #    calls:
+    #        - [ setTranslationDomain, [IIABStudentTransferBundle]]
+    sonata.admin.submissionData:
+        class: IIAB\StudentTransferBundle\Admin\SubmissionDataAdmin
+        tags:
+            - { name: sonata.admin , manager_type: orm, group: "iiab.admin.right.side", label: "Submission Data" }
+        arguments:
+            - ~
+            - IIAB\StudentTransferBundle\Entity\SubmissionData
+            - ~
+        calls:
+            - [ setTranslationDomain, [IIABStudentTransferBundle]]

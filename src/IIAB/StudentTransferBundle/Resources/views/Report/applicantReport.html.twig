@@ -1,0 +1,23 @@
+<html>
+<style type="text/css">
+    ol {
+
+    }
+    table {
+        font-size: 10pt;
+    }
+
+    ol li {
+        margin-bottom: 10px;
+    }
+
+    ol li ol li {
+        margin-top: 10px;
+    }
+</style>
+<body style="font-family: serif; font-size: 10pt;">
+<pagefooter name="magnetFooter" content-left="Choice.tuscaloosacityschools.com" content-center="{{ "now"|date('Y-m-d') }}" content-right="{PAGENO} of {nbpg}" footer-style="font-family:serif; font-size:7pt; font-weight:light; color:#000;" line="on"/>
+<setpagefooter name="magnetFooter" value="on" page="all"/>
+{{ render( controller( 'IIABStudentTransferBundle:Report:generatePDFContent' , { 'submission': submission , 'submissionGrades':grades , 'school':choice , 'race':race , 'passedEligibility':passedEligibility , 'eligibilityGrade':eligibilityGrade , 'eligibilityCourseTitle':eligibilityCourseTitle } ) ) }}
+</body>
+</html>

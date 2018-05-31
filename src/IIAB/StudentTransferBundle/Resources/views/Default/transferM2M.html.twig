@@ -1,0 +1,150 @@
+{% extends '@IIABStudentTransfer/layout.html.twig' %}
+
+{% block title %}{{ 'm2m.title'|trans( {} , 'IIABStudentTransferBundle') }}{% endblock %}
+
+{% block pageTitle %}<h1>{{ 'm2m.header'|trans( {} , 'IIABStudentTransferBundle') }}</h1>
+
+    <p>
+        {% set otherFiles = false %}
+        {% if openEnrollment.m2mPDFInfo is not empty and app.request.locale == 'en' %}
+            {% set otherFiles = true %}
+            <a href="{{ openEnrollment.m2mPDFInfo }}" onclick="window.open( this.href );return false;">{{ 'footer.helpDocument4'|trans( {} , 'IIABStudentTransferBundle' ) }}</a>
+        {% endif %}
+        {% if openEnrollment.m2mPDFInfoES is not empty and app.request.locale == 'es' %}
+            {% set otherFiles = true %}
+            <a href="{{ openEnrollment.m2mPDFInfoES }}" onclick="window.open( this.href );return false;">{{ 'footer.helpDocument4'|trans( {} , 'IIABStudentTransferBundle' ) }}</a>
+        {% endif %}
+
+        {% if openEnrollment.infoPDF is not empty and app.request.locale == 'en' %}
+            {% if otherFiles %}
+                &nbsp;|&nbsp;
+            {% endif %}
+            <a href="{{ openEnrollment.infoPDF }}" onclick="window.open( this.href );return false;">{{ 'footer.helpDocument1'|trans( {} , 'IIABStudentTransferBundle' ) }}</a>
+        {% endif %}
+        {% if openEnrollment.infoPDFES is not empty and app.request.locale == 'es' %}
+            {% if otherFiles %}
+                &nbsp;|&nbsp;
+            {% endif %}
+            <a href="{{ openEnrollment.infoPDFES }}" onclick="window.open( this.href );return false;">{{ 'footer.helpDocument1'|trans( {} , 'IIABStudentTransferBundle' ) }}</a>
+        {% endif %}
+
+        {% if openEnrollment.m2mPDFFAQs is not empty and app.request.locale == 'en' %}
+            {% if otherFiles %}
+                &nbsp;|&nbsp;
+            {% endif %}
+            <a href="{{ openEnrollment.m2mPDFFAQs }}" onclick="window.open( this.href );return false;">{{ 'footer.helpDocument2'|trans( {} , 'IIABStudentTransferBundle' ) }}</a>
+        {% endif %}
+        {% if openEnrollment.m2mPDFFAQsES is not empty and app.request.locale == 'es' %}
+            {% if otherFiles %}
+                &nbsp;|&nbsp;
+            {% endif %}
+            <a href="{{ openEnrollment.m2mPDFFAQsES }}" onclick="window.open( this.href );return false;">{{ 'footer.helpDocument2'|trans( {} , 'IIABStudentTransferBundle' ) }}</a>
+        {% endif %}
+        {#
+        | <a onclick="window.open( this.href );return false;" href="{{ asset( 'bundles/iiabstudenttransfer/pdfs/Majority-to-Minority-FAQs.' ~ app.request.locale ~ '.pdf' ) }}?updated=20140507">{{ 'footer.helpDocument2'|trans( {} , 'IIABStudentTransferBundle' ) }}</a>
+
+        <br /><a href="#" onclick="return false;" class="tooltip red">
+            {{ 'tooltipKindergarten.heading'|trans( {} , 'IIABStudentTransferBundle' ) }}
+                <span>
+                    <img class="callout" src="{{ asset( '/bundles/iiabstudenttransfer/images/callout.gif' ) }}" />
+                    <strong>{{ 'tooltipKindergarten.heading'|trans( {} , 'IIABStudentTransferBundle' ) }}</strong><br />
+                    {{ 'tooltipKindergarten.body'|trans( {} , 'IIABStudentTransferBundle' )|raw }}
+                </span>
+        </a>
+        #}
+    </p>
+{% endblock %}
+
+{% block body %}
+
+    <p class="action"><a href="{{ url( 'stw_index' ) }}">{{ 'links.start'|trans( {} , 'IIABStudentTransferBundle') }}</a>
+        {% if step > 0 and step < 4 %} | <a href="{{ url( 'stw_m2m' , { 'step' : step } ) }}">{{ 'links.goBack'|trans( {} , 'IIABStudentTransferBundle') }}</a>{% endif %}
+        {% if step == 4 %} | <a href="{{ url( 'stw_m2m' , { 'step' : 3 } ) }}">{{ 'links.goBack'|trans( {} , 'IIABStudentTransferBundle') }}</a>{% endif %}
+    </p>
+    {% if step > 0 and step < 4 %}
+        <p class="step">{{ 'base.step'|trans( {} , 'IIABStudentTransferBundle' ) }} {{ step + 1 }}</p>
+    {% endif %}
+
+    {{ form_start( form , { 'attr': { 'autocomplete': 'off' , 'novalidate': 'novalidate' } } ) }}
+        {{ form_errors( form ) }}
+
+        {% if nonFormFields is defined %}
+            {{ include( 'IIABStudentTransferBundle:Default:textFields.html.twig' , { 'textFields': nonFormFields } ) }}
+        {% endif %}
+
+        {% if form.studentID is defined %}
+        <div>
+            {{ form_label(form.studentID) }}
+            {{ form_errors(form.studentID) }}
+            {{ form_widget(form.studentID) }}
+            <a href="#" onclick="return false;" class="tooltip">
+                ?
+                <span>
+                    <img class="callout" src="{{ asset( '/bundles/iiabstudenttransfer/images/callout.gif' ) }}" />
+                    <strong>{{ 'tooltipStudentID.heading'|trans( {} , 'IIABStudentTransferBundle' ) }}</strong><br />
+                    {{ 'tooltipStudentID.body'|trans( {} , 'IIABStudentTransferBundle' )|raw }}
+                </span>
+            </a>
+        </div>
+        {% endif %}
+        {% if form.studentStatus is defined and step == 0 %}
+            <div>
+                {{ form_label(form.studentStatus) }}
+                {{ form_errors(form.studentStatus) }}
+                {{ form_widget(form.studentStatus) }}
+            </div>
+            <p><small>{{ 'm2m.step1SelectionHelper'|trans( {} , 'IIABStudentTransferBundle' ) }}</small></p>
+        {% endif %}
+
+        {% if form.choice1 is defined %}
+            <div class="notice button button-rounded button-block">{{ 'popup.schoolChoice.body'|trans( {} , 'IIABStudentTransferBundle' )|raw }}</div>
+        {% endif %}
+
+        {% if form.expiring is defined %}
+            <div class="notice button button-rounded button-block" style="padding:30px 15px; margin-bottom:20px;">{{ 'm2m.expiring'|trans( {} , 'IIABStudentTransferBundle' )|escape }}</div>
+        {% endif %}
+
+        {% if form.notExpiring is defined %}
+             <div class="notice button button-rounded button-block" style="padding:30px 15px; margin-bottom:20px;">{{ 'm2m.notExpiring'|trans( {} , 'IIABStudentTransferBundle' )|escape }}</div>
+        {% endif %}
+
+        {% if form.wrongInfo is defined %}
+        <div class="wrongInfo">
+            {{ form_label(form.wrongInfo) }}
+            {{ form_widget(form.wrongInfo) }}
+        </div>
+        {% endif %}
+
+    {% if form.notExpiring is defined %}
+        <div class="notExpiring">
+            {{ form_label(form.notExpiring) }}
+            {{ form_widget(form.notExpiring) }}
+        </div>
+    {% endif %}
+
+    {% if form.expiring is defined %}
+        <div class="expiring">
+            {{ form_label(form.expiring) }}
+            {{ form_widget(form.expiring) }}
+        </div>
+    {% endif %}
+
+        {% if form.correctInfo is defined %}
+            <div class="correctInfo">
+                {{ form_label(form.correctInfo) }}
+                {{ form_widget(form.correctInfo) }}
+            </div>
+        {% endif %}
+
+        {% if form.proceedOption is not defined and form.submitAndNext is not defined and form.correctInfo is not defined and form.wrongInfo is not defined %}
+            <p><a href="{{ url( 'stw_index' ) }}" class="button button-rounded">{{ 'forms.finish'|trans( {} , 'IIABStudentTransferBundle' ) }}</a></p>
+        {% endif %}
+
+        {{ form_rest(form) }}
+
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block disclaimer %}
+<p>{{ 'm2m.footer.disclaimer'|trans( {} , 'IIABStudentTransferBundle' ) }}</p>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends '@IIABStudentTransfer/standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block sonata_page_content_header %}
+    <h2>{{ openEnrollment }} - Process Late Accountability Act Submissions</h2>
+    {{ render( controller('IIABStudentTransferBundle:Lottery:processingStatus') ) }}
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Current Status: {{ lottery.lotteryStatus }}</div>
+                <div class="panel-body">
+
+                    {% if update_successful is defined and update_successful == true %}
+                        <div class="alert alert-success"> {{ 'current_enrollment.update_successful'|trans( {} , 'IIABStudentTransferBundle' ) }}</div>
+                    {% endif %}
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <p> Active Submissions: {{ submissionCount.active }}<br/>
+                                Offered Submissions: {{ submissionCount.m2m_offered }}<br/>
+                                Waitlisted Submissions: {{ submissionCount.waitlist }}<br/>
+                                Offered and Waitlisted Submissions: {{ submissionCount.m2m_offered_and_waitlist }}<br/>
+                            </p>
+
+
+                            <p>Last Late Lottery Processing Date:
+                                {% if lottery.lastLateLotteryProcess is not null %}
+                                    {{ lottery.lastLateLotteryProcess|date('Y-m-d h:i a') }}
+                                {% else %}
+                                    Not Processed
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="clear clearfix"></div>
+                        <hr />
+                    </div>
+
+                    {{ form_start(form) }}
+
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <p>
+                                {{ form_widget(form.processLateLottery) }}
+                            </p>
+                        </div>
+
+                        <div class="clear clearfix"></div>
+                        <hr />
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                {{ form_row(form.processPDF) }}
+                            </div>
+                        </div>
+
+                        <div class="clear clearfix"></div>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

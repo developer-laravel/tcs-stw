@@ -1,0 +1,136 @@
+{% block subject %}
+    {% spaceless %}
+        Tuscaloosa City Schools Transfer Application Confirmation: {{ confirmation }}
+    {% endspaceless %}
+{% endblock subject %}
+
+{% block body_text %}
+Hi {{ email }},
+
+You recently submitted an application for transferring within Tuscaloosa City Schools for school year {{ enrollment }}.
+
+Your application has been successfully accepted for consideration!  This email is to confirm that Tuscaloosa City Schools has received your request for a transfer.
+
+In order to complete the process of applying for this transfer you must provide proof of residency to the TCS Attendance Office located at 1210 21st Avenue by providing one of following sets of documentation
+
+* Your current year property tax receipt plus two current utility bills OR
+* Your current lease/rental agreement plus two current utility bills (if utilities are part of the rent the parent can provide a written statement from their landlord to that effect in lieu of providing two utility bills) OR
+* Your current mortgage, mortgage statement, or warranty deed plus two current utility bills
+
+This email does not grant your request for a transfer.  This email does not guarantee that your request will be granted.
+
+You will receive additional updates at this email address as the admission process continues.
+
+For future reference, your confirmation # is {{ confirmation }}. Please retain a copy of this email for your records.
+
+Please add choice@tusc.k12.al.us to your address list to ensure you receive future status updates of your application.
+
+This is an automated email message from a mailbox that does not accept replies.  If you have questions about the application process, please call 205.759.3700 between 8:30 a.m. and 4:00 p.m., Monday through Friday.
+
+Thanks,
+Tuscaloosa City Schools
+{% endblock body_text %}
+
+{% block body_html %}
+
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <!-- If you delete this meta tag, Half Life 3 will never be released. -->
+        <meta name="viewport" content="width=device-width"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>Confirmation Email</title>
+    </head>
+    <body bgcolor="#FFFFFF" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;-webkit-font-smoothing: antialiased;-webkit-text-size-adjust: none;width: 100% !important;height: 100%">
+
+    <!-- HEADER -->
+    <table class="head-wrap" bgcolor="#FFFFFF" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;width: 100%;background: url(https://Choice.tuscaloosacityschools.com/img/BodyBackground.jpg) repeat-x #FFF;height: 140px">
+        <tr style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"></td>
+            <td class="header container" style="margin: 0 auto !important;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;display: block !important;max-width: 600px !important;clear: both !important">
+                <div class="content" style="margin: 0 auto;padding: 15px;font-family: Helvetica, Helvetica, Arial, sans-serif;max-width: 600px;display: block">
+                    <table style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;width: 100%">
+                        <tr style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+                            <td align="center" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+                                <h3 style="color: #FFF;margin: 0;padding: 0;font-family: HelveticaNeue-Light, Helvetica, Arial, Lucida Grande, sans-serif;line-height: 1.1;margin-bottom: 15px;font-weight: 500;font-size: 27px">Tuscaloosa City School Transfer Application</h3>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"></td>
+        </tr>
+    </table>
+    <!-- /HEADER --><!-- BODY -->
+    <table class="body-wrap" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;width: 100%">
+        <tr style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"> </td>
+            <td class="container" bgcolor="#FFFFFF" style="margin: 0 auto !important;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;display: block !important;max-width: 600px !important;clear: both !important">
+
+                <div class="content" style="margin: 0 auto;padding: 15px;font-family: Helvetica, Helvetica, Arial, sans-serif;max-width: 600px;display: block">
+                    <table style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;width: 100%">
+                        <tr style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+                            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+
+                                <h3 style="margin: 0;padding: 0;font-family: HelveticaNeue-Light, Helvetica, Arial, Lucida Grande, sans-serif;line-height: 1.1;margin-bottom: 15px;color: #000;font-weight: 500;font-size: 27px">Hi {{ email }},</h3>
+
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">You recently submitted an application for transferring within Tuscaloosa City Schools for school year {{ enrollment }}.</p>
+
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">Your application has been successfully accepted for consideration!  This email is to confirm that Tuscaloosa City Schools has received your request for a transfer.</p>
+
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">
+                                    In order to complete the process of applying for this transfer you must provide proof of residency to the TCS Attendance Office located at 1210 21st Avenue by providing one of following sets of documentation:<br/>
+                                    <ul style="padding: 20px; margin: auto;">
+                                        <li style=" padding: 5px; text-align: left;">Your current year property tax receipt plus two current utility bills OR</li>
+                                        <li style=" padding: 5px; text-align: left;">Your current lease/rental agreement plus two current utility bills (if utilities are part of the rent the parent can provide a written statement from their landlord to that effect in lieu of providing two utility bills) OR</li>
+                                        <li style=" padding: 5px; text-align: left;">Your current mortgage, mortgage statement, or warranty deed plus two current utility bills</li>
+                                    </ul>
+                                </p>
+
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">This email does not grant your request for a transfer.  <span style="text-decoration:underline;">This email does not guarantee that your request will be granted</span>.</p>
+
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">You will receive additional updates at this email address as the admission process continues.</p>
+
+                                <!-- Callout Panel -->
+                                <p class="callout" style="margin: 0;padding: 15px;font-family: Helvetica, Helvetica, Arial, sans-serif;background-color: #ECF8FF;margin-bottom: 15px;font-weight: 400;font-size: 14px;line-height: 1.6">For future reference, your confirmation # is <strong style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">{{ confirmation }}</strong>. Please retain a copy of this email for your records.</p><!-- /Callout Panel -->
+
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">Please add choice@tusc.k12.al.us to your address list to ensure you receive future status updates of your application.</p>
+
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">This is an automated email message from a mailbox that does not accept replies. If you have questions about the application process, please  call 205.759.3700 between 8:30 a.m. and 4:00 p.m., Monday through Friday.</p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- /content -->
+            </td>
+            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"> </td>
+        </tr>
+    </table>
+    <!-- /BODY --><!-- FOOTER -->
+    <table class="footer-wrap" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;width: 100%;clear: both !important">
+        <tr style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"></td>
+            <td class="container" style="margin: 0 auto !important;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;display: block !important;max-width: 600px !important;clear: both !important">
+
+                <!-- content -->
+                <div class="content" style="margin: 0 auto;padding: 15px;font-family: Helvetica, Helvetica, Arial, sans-serif;max-width: 600px;display: block">
+                    <table style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;width: 100%">
+                        <tr style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+                            <td align="center" style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif">
+                                <p style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif;margin-bottom: 10px;font-weight: 400;font-size: 14px;line-height: 1.6">
+                                    Tuscaloosa City Schools<br style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"/>1210 21st Avenue | Tuscaloosa, AL 35401 | (205) 759-3700
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- /content -->
+
+            </td>
+            <td style="margin: 0;padding: 0;font-family: Helvetica, Helvetica, Arial, sans-serif"></td>
+        </tr>
+    </table>
+    <!-- /FOOTER --></body>
+    </html>
+
+
+{% endblock body_html %}

@@ -1,0 +1,28 @@
+iiab_student_transfer:
+    resource: "@IIABStudentTransferBundle/Controller"
+    type: annotation
+    prefix:   /
+
+admin:
+    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+    prefix: /admin
+    options: { i18n: false }
+
+_sonata_admin:
+    resource: .
+    type: sonata_admin
+    prefix: /admin
+    options: { i18n: false }
+
+sonata_user_admin_security:
+    resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
+
+sonata_user_admin_resetting:
+    resource: '@SonataUserBundle/Resources/config/routing/admin_resetting.xml'
+    prefix: /admin/resetting
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

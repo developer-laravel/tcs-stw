@@ -1,0 +1,67 @@
+{% extends '@IIABStudentTransfer/standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block sonata_page_content_header %}
+    <h2>{{ openEnrollment }} - Dashboard</h2>
+    {{ render( controller('IIABStudentTransferBundle:Lottery:processingStatus') ) }}
+{% endblock %}
+{% block content %}
+    <div class="sonata-ba-form">
+
+        <div class="panel panel-default">
+
+            {% if currentEnrollment is defined and currentEnrollment is not empty %}
+                <div class="table-responsive">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="table widefat table-hover table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col" style="width: 30%; text-align:center;">&nbsp;School&nbsp;</th>
+                            <th scope="col" style="text-align: center;">Total Available Slots</th>
+                            <th scope="col" style="text-align: center;">Total Wait Listed</th>
+                            <th scope="col" style="text-align: center;">White</th>
+                            <th scope="col" style="text-align: center;">Black</th>
+                            <th scope="col" style="text-align: center;">Other</th>
+                            <th scope="col" style="text-align: center;">Total</th>
+                            <th scope="col" style="text-align: center;">White (%)</th>
+                            <th scope="col" style="text-align: center;">Black (%)</th>
+                            <th scope="col" style="text-align: center;">Other (%)</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th scope="col" style="width: 30%; text-align:center;">&nbsp;School&nbsp;</th>
+                            <th scope="col" style="text-align: center;">Total Available Slots</th>
+                            <th scope="col" style="text-align: center;">Total Wait Listed</th>
+                            <th scope="col" style="text-align: center;">White</th>
+                            <th scope="col" style="text-align: center;">Black</th>
+                            <th scope="col" style="text-align: center;">Other</th>
+                            <th scope="col" style="text-align: center;">Total</th>
+                            <th scope="col" style="text-align: center;">White (%)</th>
+                            <th scope="col" style="text-align: center;">Black (%)</th>
+                            <th scope="col" style="text-align: center;">Other (%)</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        {% for id, current in currentEnrollment %}
+                            <tr>
+                                <td>{{ current.groupID.name }}</td>
+                                <td style="text-align: center;">{{ (current.maxCapacity - current.sum) }}</td>
+                                <td style="text-align: center;">{% if waitList[current.groupID.id] is defined %}{{ waitList[current.groupID.id] }}{% else %}0{% endif %}</td>
+                                <td style="text-align: center;">{{ current.white }}</td>
+                                <td style="text-align: center;">{{ current.black }}</td>
+                                <td style="text-align: center;">{{ current.other }}</td>
+                                <td style="text-align: center;">{{ current.sum }}</td>
+                                <td style="text-align: center;">{{ ((current.white / current.sum) * 100)|number_format(2) }}%</td>
+                                <td style="text-align: center;">{{ ((current.black / current.sum) * 100)|number_format(2) }}%</td>
+                                <td style="text-align: center;">{{ ((current.other / current.sum) * 100)|number_format(2) }}%</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

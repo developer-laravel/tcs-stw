@@ -1,0 +1,151 @@
+$font-stack:    Helvetica, sans-serif
+$primary-color: #333
+$line-height: 1.35em
+
+
+
+body
+  font: 100% $font-stack
+  color: $primary-color
+  background: transparent url( '../images/BodyBackground.jpg' ) repeat-x top center
+  margin: 0
+  padding: 0
+  a
+    color: $primary-color
+    text-decoration: underline
+    &:hover, &:active
+      text-decoration: none
+      color: lighten( $primary-color , 10% )
+
+header
+  .header
+    margin: 0 auto
+    display: block
+    background: transparent url( '../images/HeaderLogo.png' ) no-repeat top center
+    height: 247px
+    width: 800px
+
+footer
+  margin: 0
+  padding: 0
+  clear: both
+  display: block
+  .footer
+    font-size: 12px
+    width: 100%
+    padding-top: 15px
+    text-align: center
+
+.container
+  margin: -50px auto 50px
+  display: block
+  width: 100%
+  max-width: 720px
+  padding: 0
+  position: relative
+  div.translations
+    position: absolute
+    top: -70px
+    right: 10px
+    ul
+      li
+        display: inline-block
+        a
+          font-size: 10px
+  h1, h2, h3
+    line-height: $line-height
+    text-align: center
+    font-family: $font-stack
+  h1
+    font-size: 28px
+  h2
+    font-size: 22px
+  h3
+    font-size: 18px
+  p
+    font-size: 16px
+    line-height: $line-height
+    font-family: $font-stack
+
+  .action, .step
+    font-weight: 700
+  .action
+    float: left
+  .step
+    float: right
+
+  form
+    float: left
+    margin-top: 25px
+    clear: both
+    display: block
+    width: 100%
+
+  div
+    display: block
+    clear: both
+    margin: 0 auto 25px
+
+    label
+      margin-bottom: 10px
+      width: 255px
+      display: inline-block
+
+    #form_dob, #form_choice3, #form_siblingdob
+      display: inline-block
+
+    #form_choice3_0
+      margin-top: -10px
+
+  div.group
+    label
+      float: left
+      display: inline-block
+
+    span
+      display: inline-block
+
+  div.wrongInfo, div.correctInfo, div.accept, div.decline
+    float: left
+    position: relative
+    display: inline-block
+    clear: none
+  div.correctInfo, div.accept
+    float: right
+
+  .button
+    font-weight: 700
+    margin-bottom: 15px
+    &.button-action
+      &:hover, &:active
+        color: white
+    &:hover, &:active
+      color: black
+    &.success, &.error, &.notice
+      padding: 10px
+      line-height: $line-height
+      height: auto
+
+  .hide
+    display: none
+
+  ul
+    list-style: none
+    margin: 0
+    padding: 0
+    li
+      display: block
+      text-align: center
+      button
+        font-size: 16px
+        font-family: $font-stack
+
+@media print
+  .container
+    width: auto
+  button, .button
+    color: black !important
+
+@media (min-width: 600px)
+  .container
+    padding: 0 15px

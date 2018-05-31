@@ -1,0 +1,78 @@
+{% extends '@IIABStudentTransfer/standard_layout.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block sonata_page_content_header %}
+    <h2>{{ openEnrollment }} - Process Accountability Act</h2>
+    {{ render( controller('IIABStudentTransferBundle:Lottery:processingStatus') ) }}
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Current Status: {{ lottery.lotteryStatus }}</div>
+                <div class="panel-body">
+                    {% if update_successful is defined and update_successful == true %}
+                        <div class="alert alert-success"> {{ 'current_enrollment.update_successful'|trans( {} , 'IIABStudentTransferBundle' ) }}</div>
+                    {% endif %}
+                    <div class="form-group">
+                        <p>Last Round 1 Processing Date: {% if lottery.lastFirstRoundProcess is not null %}{{ lottery.lastFirstRoundProcess|date('Y-m-d h:i a') }}{% endif %}</p>
+                        <p>Last Round 2 Processing Date: {% if lottery.lastSecondRoundProcess is not null %}{{ lottery.lastSecondRoundProcess|date('Y-m-d h:i a') }}{% endif %}</p>
+
+                        <hr />
+                    </div>
+                    {{ form_start(form) }}
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            {% if form.processRound1 is defined %}
+                                {{ form_widget(form.processRound1) }}
+                            {% endif %}
+                            <div class="clear clearfix"></div>
+                        </div>
+                        <div class="col-md-6">
+                            {% if form.processRound2 is defined %}
+                                {{ form_widget(form.processRound2) }}
+                            {% endif %}
+                            <div class="clear clearfix"></div>
+                        </div>
+                        <div class="clear clearfix"></div>
+                        <p>&nbsp;</p>
+                    </div>
+                    <div class="clear clearfix"></div>
+                    <div class="form-group">
+                        <hr />
+                        <div class="col-md-6">
+                            {% if form.round1ProcessingDate is defined %}
+                                {{ form_row(form.round1ProcessingDate) }}<br />
+                            {% endif %}
+                            <p>&nbsp;</p>
+                        </div>
+                        <div class="col-md-6">
+                            {% if form.round2ProcessingDate is defined %}
+                                {{ form_row(form.round2ProcessingDate) }}<br />
+                            {% endif %}
+                            <p>&nbsp;</p>
+                        </div>
+                        <div class="col-md-6">
+                            {% if form.offlineCloseTime is defined %}
+                                {{ form_row(form.offlineCloseTime) }}<br />
+                                <small style="padding:4px;" class="bg-warning">Time when the office will close to allow offline acceptance.</small>
+                            {% endif %}
+                            <p>&nbsp;</p>
+                        </div>
+                    </div>
+                    <div class="clear clearfix"></div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            {{ form_row(form.processPDF) }}
+                        </div>
+                    </div>
+                    <div class="clear clearfix"></div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

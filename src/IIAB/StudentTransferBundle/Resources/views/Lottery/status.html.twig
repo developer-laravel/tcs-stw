@@ -1,0 +1,16 @@
+{% if processes is defined and processes is not empty %}
+    <div id="process-status" class="alert alert-info" role="alert">
+        <ul>
+            {% for process in processes %}
+                <li id="process-{{ process.id }}" {% if process.completed == 1 %}class="completed"{% else %}class="need-updating" data-id="{{ process.id }}"{% endif %}><strong>{{ process.event|capitalize }} {{ process.type|capitalize }}</strong>
+                    {% if process.running == 1 %}
+                        is currently running. Please wait.
+                    {% elseif process.completed == 1 %}
+                        this task has completed at {{ process.completedDateTime|date('m/d/y h:ia') }}
+                    {% else %}
+                        is currently running. Please wait..
+                    {% endif %}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

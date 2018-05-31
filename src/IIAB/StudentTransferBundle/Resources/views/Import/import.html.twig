@@ -1,0 +1,51 @@
+{% extends "@IIABStudentTransfer/standard_layout.html.twig" %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css" media="all">
+        #form {
+            display:block;
+        }
+        #form div {
+            margin: 10px 20px;
+        }
+        #form div label {
+            float:left;
+            display:block;
+            width:220px;
+            margin-top:13px;
+        }
+        #form div input, #form div select {
+            float:left;
+            width: 300px;
+        }
+        #form div #form_import-file {
+            margin-top:13px;
+        }
+        #form div #form_import-submit {
+            clear:both;
+            float:left;
+            margin: 30px 0 0 220px;
+        }
+    </style>
+{% endblock %}
+
+{% block sonata_page_content_header %}
+    <h2>{{ 'import.header'|trans( {} , 'IIABStudentTransferBundle' ) }}</h2>
+{% endblock %}
+
+{% block notice %}
+    {% if message is defined %}
+        <div class="alert alert-warning alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {{ message|raw }}
+        </div>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block form %}
+    {{ parent() }}
+
+    {{ form(form) }}
+{% endblock %}
