@@ -566,6 +566,8 @@
                                 <li{% if app.request.requestUri == path('emailformat_transfersuccessprep2') %} class="active"{% endif %}><a href="{{ url('emailformat_transfersuccessprep2') }}"><i class="fa fa-angle-double-right"></i> Schools Success Prep <br>Application Confirmation Emails</a></li>
                                 <li{% if app.request.requestUri == path('emailformat_transferaccountability2') %} class="active"{% endif %}><a href="{{ url('emailformat_transferaccountability2') }}"><i class="fa fa-angle-double-right"></i> Accountability Schools <br>Transfer Confirmation Emails</a></li>
                                 
+                                <li{% if app.request.requestUri == path('pagelayout_success') %} class="active"{% endif %}><a href="{{ url('pagelayout_success') }}"><i class="fa fa-angle-double-right"></i> Success Template</a></li>
+                                
                             {% endif %}
                         </ul>
                     </li>
